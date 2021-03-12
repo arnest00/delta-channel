@@ -4,13 +4,21 @@ const express = require('express'),
 const Post = require('../models/Post');
 
 const getNextPostId = () => {
-  // retreive last post id from db
-  // return next post id
+  // 
 };
 
-// ====== Handle add post
+getNextPostId();
+
+// ====== INDEX
+router.get('/', (req, res) => {
+  Post.find({})
+    .then(posts => res.send(posts))
+    .catch(err => console.log(err));
+});
+
+// ====== CREATE
 router.post('/', (req, res) => {
-  // save post to db
+  //
 });
 
 module.exports = router;
