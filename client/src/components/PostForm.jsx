@@ -1,11 +1,14 @@
-import React from 'react';
+const PostForm = () => {
+  const handleSubmit = e => {
+    e.preventDefault();
 
-const PostForm = ({ onClick }) => {
+    console.log(e);
+  };
+
   return ( 
-    <React.Fragment>
-      <form action=''>
+    <form onSubmit={handleSubmit}>
+      <div>
         <label htmlFor='post-input'>Reply to the last post</label>
-
         <textarea 
           id='post-input'
           name='post-input'
@@ -13,16 +16,15 @@ const PostForm = ({ onClick }) => {
           minLength='15'
           maxLength='750'
         ></textarea>
+      </div>
 
-        <button 
-          type='submit'
-          onClick={onClick}
-        >
-          Post
-        </button>
-      </form>
-    </React.Fragment>
+      <button 
+        type='submit'
+      >
+        Post
+      </button>
+    </form>
   );
-}
+};
  
 export default PostForm;
