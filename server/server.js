@@ -25,10 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ====== Routes
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('This is the root route!');
 });
-app.use('/posts', postRoutes);
+app.use('/api/posts', postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
