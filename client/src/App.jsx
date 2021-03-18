@@ -1,11 +1,14 @@
+import React from 'react';
+import Header from './components/Header';
 import Container from './components/Container';
 import './stylesheets/App.scss';
 
 function App() {
   return (
-    <div className='App'>
+    <React.Fragment>
+      <Header />
       <Container />
-    </div>
+    </React.Fragment>
   );
 };
 

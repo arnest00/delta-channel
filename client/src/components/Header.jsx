@@ -1,8 +1,8 @@
 const Header = () => {
   return ( 
-    <section>
-      <h1>deltaChannel</h1>
-    </section>
+    <header>
+      <h1>deltaChannel <span role='img' aria-label={'up-pointing red triangle'}>🔺</span></h1>
+    </header>
   );
 };
  

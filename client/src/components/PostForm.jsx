@@ -1,13 +1,15 @@
-const fetch = require('node-fetch');
+import React, { useState } from 'react';
+import fetch from 'node-fetch';
 
 const PostForm = () => {
+  const [ postContent, setPostContent ] = useState({ postContent: '' });
+
+  const handleChange = e => {
+    setPostContent({ postContent: e.target.value })
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const postContent = {
-      postContent: formData.get('post-content')
-    };
 
     fetch('/api/posts', {
       method: 'POST',
@@ -21,14 +23,16 @@ const PostForm = () => {
   return ( 
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor='post-content'>Reply to the last post</label>
-        <textarea 
-          id='post-content'
-          name='post-content'
-          rows='6'
-          minLength='15'
-          maxLength='750'
-        ></textarea>
+        <label>
+          Reply to the last post
+          <textarea 
+            name='post-content'
+            rows='6'
+            minLength='15'
+            maxLength='750'
+            onChange={handleChange}
+          ></textarea>
+        </label>
       </div>
 
       <button 

@@ -4,9 +4,9 @@ const PostRoll = ({ posts }) => {
 
     for (let i = posts.length - 1; i >= 0; i--) {
       formattedPosts.push(
-        <li key={posts[i].postId}>
-          {`>`}{`>`}{posts[i].postId}: {posts[i].postContent}
-        </li>
+        <section key={posts[i].postId}>
+          {`>>`}{posts[i].postId}: {posts[i].postContent}
+        </section>
       );
     };
 
@@ -14,11 +14,9 @@ const PostRoll = ({ posts }) => {
   };
 
   return ( 
-    <section>
-      <ul>
-        {formatPosts(posts)}
-      </ul>
-    </section>
+    <article>
+      {formatPosts(posts)}
+    </article>
   );
 };
  
