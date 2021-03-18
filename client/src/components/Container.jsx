@@ -1,47 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import CategoryRoll from './CategoryRoll';
+import { Switch, Route } from 'react-router-dom';
+import Categories from './Categories';
+import Topics from './Topics';
 
 const Container = () => {
   return ( 
     <main>
       <Switch>
         <Route path='/pe'>
-          <PE />
+          <Topics category='passiveEntertainment' />
         </Route>
         <Route path='/st'>
-          <ST />
+          <Topics category='smallTalk' />
         </Route>
         <Route path='/tt'>
-          <TT />
+          <Topics category='tableTop' />
         </Route>
         <Route path='/vg'>
-          <VG />
+          <Topics category='videoGames' />
         </Route>
         <Route path='/'>
-          <CategoryRoll 
-            user={'Osmond'}
-          />
+          <Categories />
         </Route>
       </Switch>
     </main>
   );
-};
-
-function PE() {
-  return <h2>passiveEntertainment</h2>;
-};
-
-function ST() {
-  return <h2>smallTalk</h2>;
-};
-
-function TT() {
-  return <h2>tableTop</h2>;
-};
-
-function VG() {
-  return <h2>videoGames</h2>;
 };
  
 export default Container;

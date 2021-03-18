@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CategoryRoll = props => {
+const Categories = () => {
   return ( 
     <article>
-      <h2>{props.user}'s categories</h2>
+      <h2>categories</h2>
         <section>
           <h3>
             <Link to='/pe'>passiveEntertainment</Link>
@@ -38,4 +38,4 @@ const CategoryRoll = props => {
   );
 };
 
-export default CategoryRoll;
+export default Categories;

@@ -7,6 +7,7 @@ const PostSchema = new mongoose.Schema({
     trim: true
   }, 
   isTopic: Boolean, 
+  topicCategory: String, 
   postParent: Number
 });
 
