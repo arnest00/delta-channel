@@ -6,6 +6,7 @@ const PostSchema = new mongoose.Schema({
     type: String, 
     trim: true
   }, 
+  timestamp: Date, 
   isTopic: Boolean, 
   topicCategory: String, 
   postParent: Number

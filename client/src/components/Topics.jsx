@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import fetch from 'node-fetch';
 
 const Topics = ({ category }) => {
@@ -16,6 +17,7 @@ const Topics = ({ category }) => {
       };
     };
 
+    document.title = `${category} - deltaChannel`;
     fetchTopics();
 
     return function cleanup() {
@@ -40,6 +42,9 @@ const Topics = ({ category }) => {
   
   return ( 
     <article>
+      <nav id='topic-navigation'>
+        <Link to='/'>Back to Categories</Link>
+      </nav>
       <h2>{category}</h2>
       {formatTopics(topics)}
     </article>

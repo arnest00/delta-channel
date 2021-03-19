@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Categories = () => {
+  useEffect(() => {
+    document.title = `deltaChannel`;
+  });
+
   return ( 
     <article>
       <h2>categories</h2>
