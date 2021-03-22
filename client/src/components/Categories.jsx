@@ -11,7 +11,7 @@ const Categories = () => {
       <h2>categories</h2>
         <section>
           <h3>
-            <Link to='/pe'>passiveEntertainment</Link>
+            <Link to='/mp'>movingPictures</Link>
           </h3>
           <span className='description'>Movies and television</span>
         </section>
