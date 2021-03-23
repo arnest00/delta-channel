@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express'),
       mongoose = require('mongoose');
 
-const postRoutes = require('./routes/posts');
+const apiRoutes = require('./routes/api');
 
 const app = express();
 
@@ -25,10 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ====== Routes
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.send('This is the root route!');
 });
-app.use('/api/posts', postRoutes);
+app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);

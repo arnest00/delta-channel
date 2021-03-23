@@ -9,7 +9,7 @@ const Topics = ({ category }) => {
     let isActive = true;
 
     const fetchTopics = async () => {
-      const response = await fetch('/api/posts');
+      const response = await fetch(`/api/${window.location.href.slice(-2)}`);
 
       if (isActive) {
         const data = await response.json();
