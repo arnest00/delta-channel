@@ -7,7 +7,6 @@ const Topics = ({ category }) => {
 
   useEffect(() => {
     let isActive = true;
-
     const fetchTopics = async () => {
       const response = await fetch(`/api/${window.location.href.slice(-2)}`);
 
@@ -25,24 +24,35 @@ const Topics = ({ category }) => {
     };
   });
 
+  const formatDate = dateStr => {
+    const dateObj = new Date(dateStr);
+    const month = dateObj.getMonth();
+    const date = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    return `${month}/${date}/${year}`;
+  };
+
   const formatTopics = topics => {
-    let formattedTopics = [];
-
-    for (let i = topics.length - 1; i >= 0; i--) {
-      formattedTopics.push(
-        <section key={topics[i].postId}>
-          <header>{`>>`}{topics[i].postId}</header>
-          <p>{topics[i].postContent}</p>
-        </section>
-      );
-    };
-
-    return formattedTopics;
+    return topics.map(t => (
+      <section key={t.postId}>
+        <header>
+          <div>
+            <h3>#{t.postId}</h3>
+            <Link to={`/`} className='expand'>View/Reply</Link>
+          </div>
+          <div>
+            <time dateTime={t.timestamp}>{formatDate(t.timestamp)}</time>
+          </div>
+        </header>
+        <span>{t.postContent}</span>
+      </section>
+    ));
   };
   
   return ( 
     <article>
-      <nav id='topic-navigation'>
+      <nav id='category-navigation'>
         <Link to='/'>Back to Categories</Link>
       </nav>
       <h2>{category}</h2>
