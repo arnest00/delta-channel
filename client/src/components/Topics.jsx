@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
+import Replies from './Replies';
 import fetch from 'node-fetch';
 
-const Topics = ({ category }) => {
+const Topics = ({ category, slug }) => {
   const [ topics, setTopics ] = useState([]);
+  const { url, path } = useRouteMatch();
 
   useEffect(() => {
     let isActive = true;
     const fetchTopics = async () => {
-      const response = await fetch(`/api/${window.location.href.slice(-2)}`);
+      const response = await fetch(`/api/${slug}`);
 
       if (isActive) {
         const data = await response.json();
@@ -26,11 +28,12 @@ const Topics = ({ category }) => {
 
   const formatDate = dateStr => {
     const dateObj = new Date(dateStr);
-    const month = dateObj.getMonth();
+    const day = dateObj.toLocaleString('default', { weekday: 'short' });
+    const month = dateObj.toLocaleString('default', { month: 'short' });
     const date = dateObj.getDate();
     const year = dateObj.getFullYear();
 
-    return `${month}/${date}/${year}`;
+    return `${day}, ${month} ${date}, ${year}`;
   };
 
   const formatTopics = topics => {
@@ -39,10 +42,11 @@ const Topics = ({ category }) => {
         <header>
           <div>
             <h3>#{t.postId}</h3>
-            <Link to={`/`} className='expand'>View/Reply</Link>
           </div>
           <div>
+            <span>Anonymous</span>
             <time dateTime={t.timestamp}>{formatDate(t.timestamp)}</time>
+            <Link to={`${path}/topic/${t.postId}`} className='expand'>View/Reply</Link>
           </div>
         </header>
         <span>{t.postContent}</span>
@@ -52,11 +56,20 @@ const Topics = ({ category }) => {
   
   return ( 
     <article>
-      <nav id='category-navigation'>
-        <Link to='/'>Back to Categories</Link>
-      </nav>
-      <h2>{category}</h2>
-      {formatTopics(topics)}
+      <Switch>
+      <Route path={`${url}/topic/:postId`}>
+        <Replies 
+          categorySlug={url}
+        />
+      </Route>
+      <Route exact path={url}>
+        <nav id='topics-navigation'>
+          <Link to='/'>back to categories</Link>
+        </nav>
+        <h2>topics in {slug}</h2>
+        {formatTopics(topics)}
+      </Route>
+      </Switch>
     </article>
   );
 }

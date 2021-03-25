@@ -15,8 +15,13 @@ const PostSchema = new mongoose.Schema({
     default: Date.now, 
     required: true
   }, 
+  // author: {
+  //   type: String, 
+  //   default: 'Anonymous', 
+  //   required: true
+  // }, 
   isTopic: Boolean, 
-  replyTopic: mongoose.ObjectId
+  topicId: mongoose.ObjectId
 });
 
 const STPost = mongoose.model('STPost', PostSchema);

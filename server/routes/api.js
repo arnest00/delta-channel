@@ -17,26 +17,25 @@ const getNextPostId = async (seqName) => {
 // ====== Index topics
 router.get('/:category', (req, res) => {
   const category = req.params.category;
-  const model = `${category.toUpperCase()}Post`;
 
-  switch (model) {
-    case 'STPost':
-      STPost.find({})
+  switch (category) {
+    case 'st':
+      STPost.find({ isTopic: true })
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
-    case 'TTPost':
-      TTPost.find({})
+    case 'tt':
+      TTPost.find({ isTopic: true })
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
-    case 'VGPost':
-      VGPost.find({})
+    case 'vg':
+      VGPost.find({ isTopic: true })
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
-    case 'MPPost':
-      MPPost.find({})
+    case 'mp':
+      MPPost.find({ isTopic: true })
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
@@ -45,10 +44,9 @@ router.get('/:category', (req, res) => {
   };
 });
 
-// ====== Create topics
+// ====== Create topic
 router.post('/:category', async (req, res) => {
   const category = req.params.category;
-  const model = `${category.toUpperCase()}Post`;
   const sequence = `${category}PostId`;
   const { postContent } = req.body;
   const postId = await getNextPostId(sequence);
@@ -59,23 +57,23 @@ router.post('/:category', async (req, res) => {
     isTopic: true
   };
 
-  switch (model) {
-    case 'STPost':
+  switch (category) {
+    case 'st':
       STPost.create(newTopic)
         .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
       break;
-    case 'TTPost':
+    case 'tt':
       TTPost.create(newTopic)
         .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
       break;
-    case 'VGPost':
+    case 'vg':
       VGPost.create(newTopic)
         .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
       break;
-    case 'MPPost':
+    case 'mp':
       MPPost.create(newTopic)
         .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
@@ -84,5 +82,38 @@ router.post('/:category', async (req, res) => {
       throw new Error('Category does not exist.');
   };
 });
+
+// ====== Index replies to topic
+router.get('/:category/topic/:postId', (req, res) => {
+  const category = req.params.category;
+  const postId = req.params.postId;
+
+  switch (category) {
+    case 'st':
+      STPost.findOne({ postId, isTopic: true })
+        .then(post => res.send(post))
+        .catch(err => console.log(err));
+      break;
+    case 'tt':
+      TTPost.findOne({ postId, isTopic: true })
+        .then(post => res.send(post))
+        .catch(err => console.log(err));
+      break;
+    case 'vg':
+      VGPost.findOne({ postId, isTopic: true })
+        .then(post => res.send(post))
+        .catch(err => console.log(err));
+      break;
+    case 'mp':
+      MPPost.findOne({ postId, isTopic: true })
+        .then(post => res.send(post))
+        .catch(err => console.log(err));
+      break;
+    default:
+      throw new Error('Topic does not exist.');
+  };
+});
+
+// ====== Create reply to topic
 
 module.exports = router;

@@ -1,7 +1,16 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Header = ({ title }) => {
   return ( 
     <header id="header">
-      <h1>{title} <span role='img' aria-label={'up-pointing red triangle'}>🔺</span></h1>
+      <nav className="header-navigation">
+        <Link to='/'>home</Link>
+      </nav>
+      <div>
+        <h1>{title.name}</h1>
+        {title.description && <span>{title.description}</span>}
+      </div>
     </header>
   );
 };
