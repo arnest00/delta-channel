@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
 import Replies from './Replies';
+import Button from './Button';
+import PostForm from './PostForm';
 import fetch from 'node-fetch';
 
 const Topics = ({ category, slug }) => {
   const [ topics, setTopics ] = useState([]);
+  const [ formIsActive, setFormIsActive ] = useState(false);
   const { url, path } = useRouteMatch();
 
   useEffect(() => {
@@ -44,31 +47,47 @@ const Topics = ({ category, slug }) => {
             <h3>#{t.postId}</h3>
           </div>
           <div>
-            <span>Anonymous</span>
+            <span>{t.author}</span>
             <time dateTime={t.timestamp}>{formatDate(t.timestamp)}</time>
-            <Link to={`${path}/topic/${t.postId}`} className='expand'>View/Reply</Link>
+            <Link to={`${path}/topic/${t.postId}`} className='expand'>View Topic</Link>
           </div>
         </header>
         <span>{t.postContent}</span>
       </section>
     ));
   };
+
+  const handleClick = () => {
+    setFormIsActive(!formIsActive);
+  };
   
   return ( 
     <article>
       <Switch>
-      <Route path={`${url}/topic/:postId`}>
-        <Replies 
-          categorySlug={url}
-        />
-      </Route>
-      <Route exact path={url}>
-        <nav id='topics-navigation'>
-          <Link to='/'>back to categories</Link>
-        </nav>
-        <h2>topics in {slug}</h2>
-        {formatTopics(topics)}
-      </Route>
+        <Route path={`${url}/topic/:postId`}>
+          <Replies 
+            categorySlug={url}
+          />
+        </Route>
+        <Route exact path={url}>
+          <nav id='topics-navigation'>
+            <Link to='/'>back to categories</Link>
+          </nav>
+          <h2>topics in {slug}</h2>
+          {!formIsActive && 
+            <Button 
+              onClick={handleClick}
+              content='Create New Topic'
+            />
+          }
+          {formIsActive && 
+            <PostForm 
+              onCancel={handleClick}
+              formRoute={slug}
+            />
+          }
+          {formatTopics(topics)}
+        </Route>
       </Switch>
     </article>
   );

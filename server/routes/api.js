@@ -48,12 +48,12 @@ router.get('/:category', (req, res) => {
 router.post('/:category', async (req, res) => {
   const category = req.params.category;
   const sequence = `${category}PostId`;
-  const { postContent } = req.body;
   const postId = await getNextPostId(sequence);
 
   const newTopic = {
     postId, 
-    postContent, 
+    postContent: req.body.postContent, 
+    author: req.body.postAuthor, 
     isTopic: true
   };
 
@@ -75,7 +75,7 @@ router.post('/:category', async (req, res) => {
       break;
     case 'mp':
       MPPost.create(newTopic)
-        .then(res.send('Post succeeded!'))
+        .then(res.json('Post succeeded!'))
         .catch(err => console.log(err));
       break;
     default:

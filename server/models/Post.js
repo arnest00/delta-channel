@@ -15,11 +15,11 @@ const PostSchema = new mongoose.Schema({
     default: Date.now, 
     required: true
   }, 
-  // author: {
-  //   type: String, 
-  //   default: 'Anonymous', 
-  //   required: true
-  // }, 
+  author: {
+    type: String, 
+    default: 'Anonymous', 
+    required: true
+  }, 
   isTopic: Boolean, 
   topicId: mongoose.ObjectId
 });

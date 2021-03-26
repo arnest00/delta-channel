@@ -42,7 +42,7 @@ const Replies = ({ categorySlug }) => {
             <h3>#{replies.postId}</h3>
           </div>
           <div>
-            <span>Anonymous</span>
+            <span>{replies.author}</span>
             <time dateTime={replies.timestamp}>{formatDate(replies.timestamp)}</time>
           </div>
         </header>

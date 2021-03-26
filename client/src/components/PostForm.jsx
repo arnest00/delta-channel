@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import fetch from 'node-fetch';
 
-const PostForm = () => {
-  const [ postContent, setPostContent ] = useState({ postContent: '' });
+const PostForm = ({ onCancel, formRoute }) => {
+  const [ formContent, setFormContent ] = useState({ postAuthor: 'Anonymous', postContent: '' });
 
-  const handleChange = e => {
-    setPostContent({ postContent: e.target.value })
+  const handleInputChange = e => {
+    setFormContent({ ...formContent, postAuthor: e.target.value })
+  };
+
+  const handleTextareaChange = e => {
+    setFormContent({ ...formContent, postContent: e.target.value })
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (!formContent.postAuthor.length) setFormContent({ ...formContent, postAuthor: 'Anonymous' });
 
-    fetch('/api/posts', {
+    fetch(`/api/${formRoute}`, {
       method: 'POST',
-      body: JSON.stringify(postContent),
+      body: JSON.stringify(formContent),
       headers: { 'Content-Type': 'application/json' }
     })
-      .then(res => res.redirect('/'))
+      .then(res => {
+        if (res.ok) {
+          onCancel();
+        };
+      })
       .catch(err => console.log(err));
   };
 
@@ -24,13 +33,25 @@ const PostForm = () => {
     <form onSubmit={handleSubmit}>
       <div>
         <label>
-          Reply to the last post
+          Name 
+          <input 
+            type='text'
+            name='post-author'
+            placeholder='Anonymous'
+            onChange={handleInputChange}
+          ></input>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Content
           <textarea 
             name='post-content'
             rows='6'
             minLength='15'
             maxLength='750'
-            onChange={handleChange}
+            onChange={handleTextareaChange}
           ></textarea>
         </label>
       </div>
@@ -39,6 +60,13 @@ const PostForm = () => {
         type='submit'
       >
         Post
+      </button>
+
+      <button
+        type='button'
+        onClick={onCancel}
+      >
+        Cancel
       </button>
     </form>
   );
