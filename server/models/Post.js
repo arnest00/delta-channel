@@ -21,7 +21,8 @@ const PostSchema = new mongoose.Schema({
     required: true
   }, 
   isTopic: Boolean, 
-  topicId: mongoose.ObjectId
+  topicChildren: Number, 
+  replyParent: mongoose.ObjectId
 });
 
 const STPost = mongoose.model('STPost', PostSchema);

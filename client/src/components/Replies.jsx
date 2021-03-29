@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Button from './Button';
+import PostForm from './PostForm';
 import fetch from 'node-fetch';
 
 const Replies = ({ categorySlug }) => {
-  const [ replies, setReplies ] = useState({});
+  const [ replies, setReplies ] = useState([]);
+  const [ formIsActive, setFormIsActive ] = useState(false);
   const { postId } = useParams();
 
   useEffect(() => {
@@ -13,6 +16,7 @@ const Replies = ({ categorySlug }) => {
 
       if (isActive) {
         const data = await response.json();
+
         setReplies(data);
       };
     };
@@ -35,20 +39,24 @@ const Replies = ({ categorySlug }) => {
   };
 
   const formatReplies = replies => {
-    return (
-      <section key={replies.postId}>
+    return replies.map((r, idx) => (
+      <section key={idx}>
         <header>
           <div>
-            <h3>#{replies.postId}</h3>
+            <h3>#{r.postId}</h3>
           </div>
           <div>
-            <span>{replies.author}</span>
-            <time dateTime={replies.timestamp}>{formatDate(replies.timestamp)}</time>
+            <span>{r.author}</span>
+            <time dateTime={r.timestamp}>{formatDate(r.timestamp)}</time>
           </div>
         </header>
-        <span>{replies.postContent}</span>
+        <span>{r.postContent}</span>
       </section>
-    );
+    ));
+  };
+
+  const handleClick = () => {
+    setFormIsActive(!formIsActive);
   };
 
   return (  
@@ -57,6 +65,18 @@ const Replies = ({ categorySlug }) => {
         <Link to={categorySlug}>back to topics</Link>
       </nav>
       <h2>replies to {categorySlug.slice(1)}#{postId}</h2>
+        {!formIsActive && 
+          <Button 
+            onClick={handleClick}
+            content='Reply to Topic'
+          />
+        }
+        {formIsActive && 
+          <PostForm 
+            onCancel={handleClick}
+            formRoute={`${categorySlug}/topic/${postId}`}
+          />
+        }
       {formatReplies(replies)}
     </section>
   );

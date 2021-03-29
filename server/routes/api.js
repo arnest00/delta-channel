@@ -54,7 +54,8 @@ router.post('/:category', async (req, res) => {
     postId, 
     postContent: req.body.postContent, 
     author: req.body.postAuthor, 
-    isTopic: true
+    isTopic: true, 
+    topicChildren: 0
   };
 
   switch (category) {
@@ -86,27 +87,37 @@ router.post('/:category', async (req, res) => {
 // ====== Index replies to topic
 router.get('/:category/topic/:postId', (req, res) => {
   const category = req.params.category;
-  const postId = req.params.postId;
+  const topicId = req.params.postId;
 
   switch (category) {
     case 'st':
-      STPost.findOne({ postId, isTopic: true })
-        .then(post => res.send(post))
+      STPost.findOne({ postId: topicId, isTopic: true })
+        .then(fetchedParent => {
+          STPost.find({ replyParent: fetchedParent._id })
+            .then(posts => {
+              console.log(fetchedParent);
+              res.send(posts);
+            })
+            .catch(err => console.log(err));
+        })
         .catch(err => console.log(err));
       break;
     case 'tt':
-      TTPost.findOne({ postId, isTopic: true })
-        .then(post => res.send(post))
-        .catch(err => console.log(err));
+      //
       break;
     case 'vg':
-      VGPost.findOne({ postId, isTopic: true })
-        .then(post => res.send(post))
-        .catch(err => console.log(err));
+      //
       break;
     case 'mp':
-      MPPost.findOne({ postId, isTopic: true })
-        .then(post => res.send(post))
+      MPPost.findOne({ postId: topicId, isTopic: true })
+        .then(fetchedParent => {
+          MPPost.find({ replyParent: fetchedParent._id })
+            .then(posts => {
+              posts.unshift(fetchedParent);
+              res.send(posts);
+            })
+            .catch(err => console.log(err));
+        })
         .catch(err => console.log(err));
       break;
     default:
@@ -115,5 +126,75 @@ router.get('/:category/topic/:postId', (req, res) => {
 });
 
 // ====== Create reply to topic
+router.post('/:category/topic/:postId', async (req, res) => {
+  const category = req.params.category;
+  const topicId = req.params.postId;
+  const sequence = `${category}PostId`;
+  const postId = await getNextPostId(sequence);
+  let fetchedParent;
+
+  const newReply = {
+    postId, 
+    postContent: req.body.postContent, 
+    author: req.body.postAuthor
+  };
+
+  switch (category) {
+    case 'st':
+      fetchedParent = await STPost.findOneAndUpdate(
+        { postId: topicId, isTopic: true }, 
+        { $inc: {topicChildren: 1} }, 
+        { new: true }
+      );
+      newReply.replyParent = fetchedParent._id;
+      
+      STPost.create(newReply)
+        .then(res.send('Post succeeded!'))
+        .catch(err => console.log(err));
+      
+      break;
+    case 'tt':
+      fetchedParent = await TTPost.findOneAndUpdate(
+        { postId: topicId, isTopic: true }, 
+        { $inc: {topicChildren: 1} }, 
+        { new: true }
+      );
+      newReply.replyParent = fetchedParent._id;
+
+      TTPost.create(newReply)
+        .then(res.send('Post succeeded!'))
+        .catch(err => console.log(err));
+
+      break;
+    case 'vg':
+      fetchedParent = await VGPost.findOneAndUpdate(
+        { postId: topicId, isTopic: true }, 
+        { $inc: {topicChildren: 1} }, 
+        { new: true }
+      );
+      newReply.replyParent = fetchedParent._id;
+
+      VGPost.create(newReply)
+        .then(res.send('Post succeeded!'))
+        .catch(err => console.log(err));
+
+      break;
+    case 'mp':
+      fetchedParent = await MPPost.findOneAndUpdate(
+        { postId: topicId, isTopic: true }, 
+        { $inc: {topicChildren: 1} }, 
+        { new: true }
+      );
+      newReply.replyParent = fetchedParent._id;
+
+      MPPost.create(newReply)
+        .then(res.json('Post succeeded!'))
+        .catch(err => console.log(err));
+
+      break;
+    default:
+      throw new Error('Topic does not exist.');
+  };
+});
 
 module.exports = router;
