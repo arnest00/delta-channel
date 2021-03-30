@@ -50,7 +50,7 @@ const Replies = ({ categorySlug }) => {
             <time dateTime={r.timestamp}>{formatDate(r.timestamp)}</time>
           </div>
         </header>
-        <span>{r.postContent}</span>
+        <pre>{r.postContent}</pre>
       </section>
     ));
   };

@@ -18,16 +18,21 @@ const Container = () => {
       categoryName: 'smallTalk', 
       categoryDescription: <React.Fragment><i>n.</i> <b>1.</b> polite conversation about unimportant things</React.Fragment>
     }, 
-    {
-      categorySlug: 'tt', 
-      categoryName: 'tableTop', 
-      categoryDescription: 'Pen and paper RPGs'
-    }, 
+    // {
+    //   categorySlug: 'tt', 
+    //   categoryName: 'tableTop', 
+    //   categoryDescription: 'Pen and paper RPGs'
+    // }, 
     {
       categorySlug: 'vg', 
       categoryName: 'videoGames', 
       categoryDescription: 'Console, PC, retro'
-    }
+    }, 
+    {
+      categorySlug: 'test', 
+      categoryName: 'testBoard', 
+      categoryDescription: 'Test posting on deltaChannel'
+    }, 
   ];
   const { pathname } = useLocation();
 

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import fetch from 'node-fetch';
 
 const PostForm = ({ onCancel, formRoute }) => {
   const [ formContent, setFormContent ] = useState({ postAuthor: 'Anonymous', postContent: '' });
-
+  let history = useHistory();
+  
   const handleInputChange = e => {
-    setFormContent({ ...formContent, postAuthor: e.target.value })
+    setFormContent({ ...formContent, postAuthor: e.target.value });
   };
 
   const handleTextareaChange = e => {
-    setFormContent({ ...formContent, postContent: e.target.value })
+    setFormContent({ ...formContent, postContent: e.target.value });
   };
 
   const handleSubmit = e => {
@@ -23,7 +25,7 @@ const PostForm = ({ onCancel, formRoute }) => {
     })
       .then(res => {
         if (res.ok) {
-          onCancel();
+          history.push(`/${formRoute}/success`);
         };
       })
       .catch(err => console.log(err));

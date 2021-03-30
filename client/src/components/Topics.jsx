@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
+import fetch from 'node-fetch';
 import Replies from './Replies';
 import Button from './Button';
 import PostForm from './PostForm';
-import fetch from 'node-fetch';
+import PostSuccess from './PostSuccess';
 
 const Topics = ({ category, slug }) => {
   const [ topics, setTopics ] = useState([]);
@@ -65,11 +66,8 @@ const Topics = ({ category, slug }) => {
   return ( 
     <article>
       <Switch>
-        <Route path={`${url}/topic/:postId`}>
-          <Replies 
-            categorySlug={url}
-          />
-        </Route>
+        <Route path={`${url}/success`} component={PostSuccess} />
+
         <Route exact path={url}>
           <nav id='topics-navigation'>
             <Link to='/'>back to categories</Link>
@@ -88,6 +86,14 @@ const Topics = ({ category, slug }) => {
             />
           }
           {formatTopics(topics)}
+        </Route>
+
+        <Route path={`${url}/topic/:postId/success`} component={PostSuccess} />
+
+        <Route path={`${url}/topic/:postId`}>
+          <Replies 
+            categorySlug={url}
+          />
         </Route>
       </Switch>
     </article>

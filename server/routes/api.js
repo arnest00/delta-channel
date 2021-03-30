@@ -1,7 +1,7 @@
 const express = require('express'),
       router = express.Router();
 
-const { STPost, TTPost, VGPost, MPPost } = require('../models/Post');
+const { STPost, VGPost, MPPost, TestPost } = require('../models/Post');
 const Sequence = require('../models/Sequence');
 
 const getNextPostId = async (seqName) => {
@@ -24,11 +24,6 @@ router.get('/:category', (req, res) => {
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
-    case 'tt':
-      TTPost.find({ isTopic: true })
-        .then(posts => res.send(posts))
-        .catch(err => console.log(err));
-      break;
     case 'vg':
       VGPost.find({ isTopic: true })
         .then(posts => res.send(posts))
@@ -36,6 +31,11 @@ router.get('/:category', (req, res) => {
       break;
     case 'mp':
       MPPost.find({ isTopic: true })
+        .then(posts => res.send(posts))
+        .catch(err => console.log(err));
+      break;
+    case 'test':
+      TestPost.find({ isTopic: true })
         .then(posts => res.send(posts))
         .catch(err => console.log(err));
       break;
@@ -64,11 +64,6 @@ router.post('/:category', async (req, res) => {
         .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
       break;
-    case 'tt':
-      TTPost.create(newTopic)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-      break;
     case 'vg':
       VGPost.create(newTopic)
         .then(res.send('Post succeeded!'))
@@ -77,6 +72,11 @@ router.post('/:category', async (req, res) => {
     case 'mp':
       MPPost.create(newTopic)
         .then(res.json('Post succeeded!'))
+        .catch(err => console.log(err));
+      break;
+    case 'test':
+      TestPost.create(newTopic)
+        .then(res.send('Post succeeded!'))
         .catch(err => console.log(err));
       break;
     default:
@@ -91,27 +91,27 @@ router.get('/:category/topic/:postId', (req, res) => {
 
   switch (category) {
     case 'st':
-      STPost.findOne({ postId: topicId, isTopic: true })
+      // 
+      break;
+    case 'vg':
+      // 
+      break;
+    case 'mp':
+      MPPost.findOne({ postId: topicId, isTopic: true })
         .then(fetchedParent => {
-          STPost.find({ replyParent: fetchedParent._id })
+          MPPost.find({ replyParent: fetchedParent._id })
             .then(posts => {
-              console.log(fetchedParent);
+              posts.unshift(fetchedParent);
               res.send(posts);
             })
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
       break;
-    case 'tt':
-      //
-      break;
-    case 'vg':
-      //
-      break;
-    case 'mp':
-      MPPost.findOne({ postId: topicId, isTopic: true })
+    case 'test':
+      TestPost.findOne({ postId: topicId, isTopic: true })
         .then(fetchedParent => {
-          MPPost.find({ replyParent: fetchedParent._id })
+          TestPost.find({ replyParent: fetchedParent._id })
             .then(posts => {
               posts.unshift(fetchedParent);
               res.send(posts);
@@ -153,19 +153,6 @@ router.post('/:category/topic/:postId', async (req, res) => {
         .catch(err => console.log(err));
       
       break;
-    case 'tt':
-      fetchedParent = await TTPost.findOneAndUpdate(
-        { postId: topicId, isTopic: true }, 
-        { $inc: {topicChildren: 1} }, 
-        { new: true }
-      );
-      newReply.replyParent = fetchedParent._id;
-
-      TTPost.create(newReply)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-
-      break;
     case 'vg':
       fetchedParent = await VGPost.findOneAndUpdate(
         { postId: topicId, isTopic: true }, 
@@ -188,6 +175,19 @@ router.post('/:category/topic/:postId', async (req, res) => {
       newReply.replyParent = fetchedParent._id;
 
       MPPost.create(newReply)
+        .then(res.json('Post succeeded!'))
+        .catch(err => console.log(err));
+
+      break;
+    case 'test':
+      fetchedParent = await TestPost.findOneAndUpdate(
+        { postId: topicId, isTopic: true }, 
+        { $inc: {topicChildren: 1} }, 
+        { new: true }
+      );
+      newReply.replyParent = fetchedParent._id;
+
+      TestPost.create(newReply)
         .then(res.json('Post succeeded!'))
         .catch(err => console.log(err));
 
