@@ -91,10 +91,28 @@ router.get('/:category/topic/:postId', (req, res) => {
 
   switch (category) {
     case 'st':
-      // 
+      STPost.findOne({ postId: topicId, isTopic: true })
+        .then(fetchedParent => {
+          STPost.find({ replyParent: fetchedParent._id })
+            .then(posts => {
+              posts.unshift(fetchedParent);
+              res.send(posts);
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
       break;
     case 'vg':
-      // 
+      VGPost.findOne({ postId: topicId, isTopic: true })
+        .then(fetchedParent => {
+          VGPost.find({ replyParent: fetchedParent._id })
+            .then(posts => {
+              posts.unshift(fetchedParent);
+              res.send(posts);
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
       break;
     case 'mp':
       MPPost.findOne({ postId: topicId, isTopic: true })

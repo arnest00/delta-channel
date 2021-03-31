@@ -1,46 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 import Button from './Button';
 import PostForm from './PostForm';
-import fetch from 'node-fetch';
+import NotFound from './NotFound';
 
-const Replies = ({ categorySlug }) => {
-  const [ replies, setReplies ] = useState([]);
-  const [ formIsActive, setFormIsActive ] = useState(false);
+const Replies = ({ replies, categorySlug, formIsActive, onClick }) => {
   const { postId } = useParams();
 
-  useEffect(() => {
-    let isActive = true;
-    const fetchReplies = async () => {
-      const response = await fetch(`/api/${categorySlug}/topic/${postId}`);
-
-      if (isActive) {
-        const data = await response.json();
-
-        setReplies(data);
-      };
-    };
-
-    fetchReplies();
-
-    return function cleanup() {
-      isActive = false;
-    };
-  });
-
-  const formatDate = dateStr => {
-    const dateObj = new Date(dateStr);
-    const day = dateObj.toLocaleString('default', { weekday: 'short' });
-    const month = dateObj.toLocaleString('default', { month: 'short' });
-    const date = dateObj.getDate();
-    const year = dateObj.getFullYear();
-
-    return `${day}, ${month} ${date}, ${year}`;
-  };
-
   const formatReplies = replies => {
-    return replies.map((r, idx) => (
-      <section key={idx}>
+    return replies.map(r => (
+      <section key={r.postId}>
         <header>
           <div>
             <h3>#{r.postId}</h3>
@@ -55,28 +25,30 @@ const Replies = ({ categorySlug }) => {
     ));
   };
 
-  const handleClick = () => {
-    setFormIsActive(!formIsActive);
+  if (isNaN(postId)) {
+    return <NotFound />
   };
 
   return (  
     <section>
       <nav id='replies-navigation'>
-        <Link to={categorySlug}>back to topics</Link>
+        <Link to={`/${categorySlug}`}>back to topics</Link>
       </nav>
-      <h2>replies to {categorySlug.slice(1)}#{postId}</h2>
-        {!formIsActive && 
-          <Button 
-            onClick={handleClick}
-            content='Reply to Topic'
-          />
-        }
-        {formIsActive && 
-          <PostForm 
-            onCancel={handleClick}
-            formRoute={`${categorySlug}/topic/${postId}`}
-          />
-        }
+      <h2>replies to {categorySlug}#{postId}</h2>
+
+      {!formIsActive && 
+        <Button 
+          onClick={onClick}
+          content='Reply to Topic'
+        />
+      }
+      {formIsActive && 
+        <PostForm 
+          onCancel={onClick}
+          formRoute={`${categorySlug}/topic/${postId}`}
+        />
+      }
+
       {formatReplies(replies)}
     </section>
   );

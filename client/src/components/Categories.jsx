@@ -20,9 +20,7 @@ const Categories = ({ categories }) => {
   return ( 
     <article>
       <h2>categories</h2>
-      <div>
-        {formatCategories(categories)}
-      </div>
+      {formatCategories(categories)}
     </article>
   );
 };

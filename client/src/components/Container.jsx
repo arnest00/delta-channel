@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import Header from './Header';
-import Topics from './Topics';
-import NotFound from './NotFound';
 import Categories from './Categories';
+import Topics from './Topics';
+import Replies from './Replies';
+import NotFound from './NotFound';
 import Footer from './Footer';
 
 const Container = () => {
@@ -18,11 +19,6 @@ const Container = () => {
       categoryName: 'smallTalk', 
       categoryDescription: <React.Fragment><i>n.</i> <b>1.</b> polite conversation about unimportant things</React.Fragment>
     }, 
-    // {
-    //   categorySlug: 'tt', 
-    //   categoryName: 'tableTop', 
-    //   categoryDescription: 'Pen and paper RPGs'
-    // }, 
     {
       categorySlug: 'vg', 
       categoryName: 'videoGames', 
@@ -34,40 +30,85 @@ const Container = () => {
       categoryDescription: 'Test posting on deltaChannel'
     }, 
   ];
+  const [ content, setContent ] = useState([]);
+  const [ currentPath, setCurrentPath ] = useState('/');
+  const [ formIsActive, setFormIsActive ] = useState(false);
   const { pathname } = useLocation();
 
-  const formatTitle = pathname => {
-    const title = [...pathname].slice(1,3).join('');
+  useEffect(() => {
+    setContent([]);
+    setCurrentPath(pathname);
+
+    let isActive = true;
+    const fetchContent = async () => {
+      const response = await fetch(`/api${currentPath}`);
+
+      if (isActive) {
+        const data = await response.json();
+
+        setContent(data);
+      };
+    };
+
+    if (currentPath !== '/') fetchContent();
+
+    return function cleanup() {
+      isActive = false;
+    };
+  }, [ pathname, currentPath ]);
+
+  const handleClick = () => {
+    setFormIsActive(!formIsActive);
+  };
+
+  const formatHeader = pathname => {
+    const slug = [...pathname].slice(1,3).join('');
 
     for (let i = 0; i < categories.length; i++) {
-      if (title === categories[i].categorySlug)
+      if (slug === categories[i].categorySlug)
         return { name: categories[i].categoryName, description: categories[i].categoryDescription};
     };
 
     return { name: 'deltaChannel'};
   };
 
-  const formatRoutes = categories => {
+  const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
-      <Route key={idx} path={`/${c.categorySlug}`}>
-        <Topics category={c.categoryName} slug={c.categorySlug}/>
+      <Route key={`top-${idx}`} path={`/${c.categorySlug}/topic/:postId`}>
+        <Replies 
+          replies={content}
+          categorySlug={c.categorySlug}
+          formIsActive={formIsActive}
+          onClick={handleClick}
+        />
+      </Route>
+    ));
+  };
+
+  const formatTopicViewRoutes = categories => {
+    return categories.map((c,idx) => (
+      <Route key={`cat-${idx}`} path={`/${c.categorySlug}`}>
+        <Topics 
+          category={c.categoryName} 
+          topics={content}
+          slug={c.categorySlug}
+          formIsActive={formIsActive}
+          onClick={handleClick}
+        />
       </Route>
     ));
   };
 
   return ( 
     <React.Fragment>
-      <Header 
-        title={formatTitle(pathname)}
-      />
+      <Header header={formatHeader(pathname)} />
       <main>
         <Switch>
-          {formatRoutes(categories)}
+          {formatReplyViewRoutes(categories)}
+          {formatTopicViewRoutes(categories)}
           <Route path='/not-found' component={NotFound} />
           <Route exact path='/'>
-            <Categories 
-              categories={categories}
-            />
+            <Categories categories={categories} />
           </Route>
           <Redirect to='/not-found' />
         </Switch>
