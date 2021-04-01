@@ -26,7 +26,7 @@ const Container = () => {
       categoryDescription: 'Console, PC, retro'
     }, 
     {
-      categorySlug: 'test', 
+      categorySlug: 'tb', 
       categoryName: 'testBoard', 
       categoryDescription: 'Test posting on deltaChannel'
     }, 
@@ -52,7 +52,7 @@ const Container = () => {
       };
     };
 
-    if (currentPath !== '/' && !currentPath.includes('success')) fetchContent();
+    if (currentPath !== '/' && currentPath !== '/not-found' && !currentPath.includes('success')) fetchContent();
 
     return function cleanup() {
       isActive = false;
@@ -63,20 +63,33 @@ const Container = () => {
     setFormIsActive(!formIsActive);
   };
 
-  const formatHeader = pathname => {
+  const setHeader = pathname => {
     const slug = [...pathname].slice(1,3).join('');
 
     for (let i = 0; i < categories.length; i++) {
-      if (slug === categories[i].categorySlug)
+      if (slug === categories[i].categorySlug) {
         return { name: categories[i].categoryName, description: categories[i].categoryDescription};
+      };
     };
 
     return { name: 'deltaChannel'};
   };
 
+  const setTitle = pathname => {
+    const slug = [...pathname].slice(1,3).join('');
+
+    for (let i = 0; i < categories.length; i++) {
+      if (slug === categories[i].categorySlug) {
+        return document.title = `${categories[i].categoryName} - deltaChannel`;
+      };
+    };
+
+    document.title = 'deltaChannel';
+  }
+
   const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
-      <Route key={`top-${idx}`} path={`/${c.categorySlug}/topic/:postId`}>
+      <Route key={`${idx}`} path={`/${c.categorySlug}/topic/:postId`}>
         <Replies 
           replies={content}
           categorySlug={c.categorySlug}
@@ -89,9 +102,8 @@ const Container = () => {
 
   const formatTopicViewRoutes = categories => {
     return categories.map((c,idx) => (
-      <Route key={`cat-${idx}`} path={`/${c.categorySlug}`}>
+      <Route key={`${idx}`} path={`/${c.categorySlug}`}>
         <Topics 
-          category={c.categoryName} 
           topics={content}
           categorySlug={c.categorySlug}
           formIsActive={formIsActive}
@@ -101,9 +113,11 @@ const Container = () => {
     ));
   };
 
+  setTitle(pathname);
+
   return ( 
     <React.Fragment>
-      <Header header={formatHeader(pathname)} />
+      <Header header={setHeader(pathname)} />
       <main>
         <Switch>
           <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />

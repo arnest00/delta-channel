@@ -22,17 +22,18 @@ const PostSchema = new mongoose.Schema({
   }, 
   isTopic: Boolean, 
   topicChildren: Number, 
+  topicLatest: Date, 
   replyParent: mongoose.ObjectId
 });
 
 const STPost = mongoose.model('STPost', PostSchema);
 const VGPost = mongoose.model('VGPost', PostSchema);
 const MPPost = mongoose.model('MPPost', PostSchema);
-const TestPost = mongoose.model('TestPost', PostSchema);
+const TBPost = mongoose.model('TBPost', PostSchema);
 
 module.exports = {
   STPost, 
   VGPost, 
   MPPost, 
-  TestPost
+  TBPost
 };

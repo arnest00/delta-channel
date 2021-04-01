@@ -4,15 +4,18 @@ import formatDate from '../utils/formatDate';
 import Button from './Button';
 import PostForm from './PostForm';
 
-const Topics = ({ category, topics, categorySlug, formIsActive, onClick }) => {
-  document.title = `${category} - deltaChannel`;
-
+const Topics = ({ topics, categorySlug, formIsActive, onClick }) => {
   const formatTopics = topics => {
-    return topics.map(t => (
+    const sortedTopics = topics.sort((a, b) => {
+      return (a.topicLatest > b.topicLatest) ? -1 : ((a.topicLatest < b.topicLatest) ? 1 : 0);
+    });
+
+    const formattedTopics = sortedTopics.map(t => (
       <section key={t.postId}>
         <header>
           <div>
             <h3>#{t.postId}</h3>
+            <span>Last Reply {formatDate(t.topicLatest)}</span>
             <Link to={`/${categorySlug}/topic/${t.postId}`} className='expand'>View Topic ({t.topicChildren} replies)</Link>
           </div>
           <div>
@@ -23,6 +26,8 @@ const Topics = ({ category, topics, categorySlug, formIsActive, onClick }) => {
         <pre>{t.postContent}</pre>
       </section>
     ));
+
+    return formattedTopics;
   };
   
   return ( 

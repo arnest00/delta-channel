@@ -4,9 +4,9 @@ import './stylesheets/App.scss';
 
 function App() {
   return (
-    <React.Fragment>
+    <div id='App'>
       <Container />
-    </React.Fragment>
+    </div>
   );
 };
 

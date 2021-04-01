@@ -32,6 +32,7 @@ const Replies = ({ replies, categorySlug, formIsActive, onClick }) => {
   return (  
     <section>
       <nav id='replies-navigation'>
+        <Link to={`/`}>back to categories</Link>
         <Link to={`/${categorySlug}`}>back to topics</Link>
       </nav>
       <h2>replies to {categorySlug}#{postId}</h2>

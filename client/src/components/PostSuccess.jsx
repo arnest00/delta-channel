@@ -8,10 +8,14 @@ const PostSuccess = () => {
   let history = useHistory();
   
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (timeRemaining === 0) return history.push(prevPage);
       setTimeRemaining(timeRemaining - 1);
     }, 1000);
+
+    return function cleanup() {
+      clearTimeout(timeoutId);
+    };
   });
 
   return ( 
