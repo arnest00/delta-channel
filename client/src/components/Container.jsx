@@ -4,6 +4,7 @@ import Header from './Header';
 import Categories from './Categories';
 import Topics from './Topics';
 import Replies from './Replies';
+import PostSuccess from './PostSuccess';
 import NotFound from './NotFound';
 import Footer from './Footer';
 
@@ -37,6 +38,7 @@ const Container = () => {
 
   useEffect(() => {
     setContent([]);
+    setFormIsActive(false);
     setCurrentPath(pathname);
 
     let isActive = true;
@@ -50,7 +52,7 @@ const Container = () => {
       };
     };
 
-    if (currentPath !== '/') fetchContent();
+    if (currentPath !== '/' && !currentPath.includes('success')) fetchContent();
 
     return function cleanup() {
       isActive = false;
@@ -91,7 +93,7 @@ const Container = () => {
         <Topics 
           category={c.categoryName} 
           topics={content}
-          slug={c.categorySlug}
+          categorySlug={c.categorySlug}
           formIsActive={formIsActive}
           onClick={handleClick}
         />
@@ -104,7 +106,9 @@ const Container = () => {
       <Header header={formatHeader(pathname)} />
       <main>
         <Switch>
+          <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />
           {formatReplyViewRoutes(categories)}
+          <Route path='/:categorySlug/success' component={PostSuccess} />
           {formatTopicViewRoutes(categories)}
           <Route path='/not-found' component={NotFound} />
           <Route exact path='/'>
