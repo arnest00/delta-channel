@@ -4,7 +4,7 @@ import formatDate from '../utils/formatDate';
 import Button from './Button';
 import PostForm from './PostForm';
 
-const Topics = ({ topics, categorySlug, formIsActive, onClick }) => {
+const Topics = ({ topics, categorySlug, formIsActive, isLoading, onClick }) => {
   const formatTopics = topics => {
     const sortedTopics = topics.sort((a, b) => {
       return (a.topicLatest > b.topicLatest) ? -1 : ((a.topicLatest < b.topicLatest) ? 1 : 0);
@@ -50,6 +50,7 @@ const Topics = ({ topics, categorySlug, formIsActive, onClick }) => {
         />
       }
 
+      {isLoading && <output>Now loading...</output>}
       {formatTopics(topics)}
     </article>
   );

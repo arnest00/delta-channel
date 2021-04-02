@@ -34,6 +34,7 @@ const Container = () => {
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ formIsActive, setFormIsActive ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -43,12 +44,14 @@ const Container = () => {
 
     let isActive = true;
     const fetchContent = async () => {
+      setIsLoading(true);
       const response = await fetch(`/api${currentPath}`);
 
       if (isActive) {
         const data = await response.json();
 
         setContent(data);
+        setIsLoading(false);
       };
     };
 
@@ -94,6 +97,7 @@ const Container = () => {
           replies={content}
           categorySlug={c.categorySlug}
           formIsActive={formIsActive}
+          isLoading={isLoading}
           onClick={handleClick}
         />
       </Route>
@@ -107,6 +111,7 @@ const Container = () => {
           topics={content}
           categorySlug={c.categorySlug}
           formIsActive={formIsActive}
+          isLoading={isLoading}
           onClick={handleClick}
         />
       </Route>

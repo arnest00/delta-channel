@@ -5,7 +5,7 @@ import Button from './Button';
 import PostForm from './PostForm';
 import NotFound from './NotFound';
 
-const Replies = ({ replies, categorySlug, formIsActive, onClick }) => {
+const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) => {
   const { postId } = useParams();
 
   const formatReplies = replies => {
@@ -50,6 +50,7 @@ const Replies = ({ replies, categorySlug, formIsActive, onClick }) => {
         />
       }
 
+      {isLoading && <output>Now loading...</output>}
       {formatReplies(replies)}
     </section>
   );
