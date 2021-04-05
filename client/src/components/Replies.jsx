@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 import Button from './Button';
 import PostForm from './PostForm';
+import NowLoading from './NowLoading';
 import NotFound from './NotFound';
 
 const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) => {
@@ -30,7 +31,7 @@ const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) =>
   };
 
   return (  
-    <section>
+    <article>
       <nav id='replies-navigation'>
         <Link to={`/`}>back to categories</Link>
         <Link to={`/${categorySlug}`}>back to topics</Link>
@@ -50,9 +51,9 @@ const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) =>
         />
       }
 
-      {isLoading && <output>Now loading...</output>}
+      {isLoading && <NowLoading />}
       {formatReplies(replies)}
-    </section>
+    </article>
   );
 };
  

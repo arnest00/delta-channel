@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 import Button from './Button';
 import PostForm from './PostForm';
+import NowLoading from './NowLoading';
 
 const Topics = ({ topics, categorySlug, formIsActive, isLoading, onClick }) => {
   const formatTopics = topics => {
@@ -50,7 +51,7 @@ const Topics = ({ topics, categorySlug, formIsActive, isLoading, onClick }) => {
         />
       }
 
-      {isLoading && <output>Now loading...</output>}
+      {isLoading && <NowLoading />}
       {formatTopics(topics)}
     </article>
   );
