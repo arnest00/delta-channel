@@ -1,4 +1,4 @@
-const express = require('express'),
+const express = require('express'), 
       router = express.Router();
 
 const { STPost, VGPost, MPPost, TBPost } = require('../models/Post');
@@ -13,6 +13,10 @@ const getNextPostId = async (seqName) => {
 
   return updatedPostIdDoc.seqValue;
 };
+
+router.get('/', (req, res) => {
+  res.send('This is the root route of the API routes!');
+});
 
 // ====== Index topics
 router.get('/:category', (req, res) => {

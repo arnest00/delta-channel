@@ -1,11 +1,16 @@
 require('dotenv').config();
 
 const express = require('express'),
-      mongoose = require('mongoose');
+      mongoose = require('mongoose'),
+      helmet = require('helmet');
 
 const apiRoutes = require('./routes/api');
 
 const app = express();
+app.disable('x-powered-by');
+
+// ====== Helmet middleware
+app.use(helmet());
 
 // ====== Set up .env variables
 const DB = process.env.MONGO_URI;
