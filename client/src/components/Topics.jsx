@@ -16,12 +16,11 @@ const Topics = ({ topics, categorySlug, formIsActive, isLoading, onClick }) => {
         <header>
           <div>
             <h3>#{t.postId}</h3>
-            <span>Last Reply {formatDate(t.topicLatest)}</span>
             <Link to={`/${categorySlug}/topic/${t.postId}`} className='expand'>View Topic ({t.topicChildren} replies)</Link>
           </div>
           <div>
             <span>{t.author}</span>
-            <time dateTime={t.timestamp}>{formatDate(t.timestamp)}</time>
+            <span>Last Reply {formatDate(t.topicLatest)}</span>
           </div>
         </header>
         <pre>{t.postContent}</pre>

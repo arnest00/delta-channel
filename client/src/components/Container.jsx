@@ -122,8 +122,8 @@ const Container = () => {
 
   return ( 
     <React.Fragment>
-      <Header header={setHeader(pathname)} />
-      <main>
+      <Header header={setHeader(pathname)} categories={categories} />
+      <main id='Container'>
         <Switch>
           <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />
           {formatReplyViewRoutes(categories)}

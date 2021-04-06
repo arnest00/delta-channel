@@ -4,14 +4,20 @@ import fetch from 'node-fetch';
 
 const PostForm = ({ onCancel, formRoute }) => {
   const [ formContent, setFormContent ] = useState({ postAuthor: 'Anonymous', postContent: '' });
+  const [ postDisabled, setPostDisabled ] = useState(true);
   let history = useHistory();
   
   const handleInputChange = e => {
-    setFormContent({ ...formContent, postAuthor: e.target.value });
+    const postAuthor = e.target.value;
+
+    setFormContent({ ...formContent, postAuthor });
   };
 
   const handleTextareaChange = e => {
-    setFormContent({ ...formContent, postContent: e.target.value });
+    const postContent = e.target.value;
+
+    if (postContent.length >= 15) setPostDisabled(false);
+    setFormContent({ ...formContent, postContent });
   };
 
   const handleSubmit = e => {
@@ -60,7 +66,8 @@ const PostForm = ({ onCancel, formRoute }) => {
       </div>
 
       <button 
-        type='submit'
+        type='submit' 
+        disabled={postDisabled}
       >
         Post
       </button>

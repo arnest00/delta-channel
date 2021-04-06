@@ -65,6 +65,8 @@ router.post('/:category', async (req, res) => {
     topicLatest: timestamp
   };
 
+  if (!newReply.postContent) throw new Error('Post content is empty.');
+
   switch (category) {
     case 'st':
       STPost.create(newTopic)
@@ -165,6 +167,8 @@ router.post('/:category/topic/:postId', async (req, res) => {
     timestamp, 
     author: req.body.postAuthor
   };
+
+  if (!newReply.postContent) throw new Error('Post content is empty.');
 
   switch (category) {
     case 'st':
