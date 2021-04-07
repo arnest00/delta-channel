@@ -93,6 +93,8 @@ router.post('/:category', async (req, res) => {
   };
 });
 
+// ====== Delete topic and replies
+
 // ====== Index replies to topic
 router.get('/:category/topic/:postId', (req, res) => {
   const category = req.params.category;
@@ -225,6 +227,62 @@ router.post('/:category/topic/:postId', async (req, res) => {
       break;
     default:
       throw new Error('Topic does not exist.');
+  };
+});
+
+// ====== Delete reply
+router.delete('/:category/topic/:postId/:replyId', async (req, res) => {
+  const { category, postId, replyId } = req.params;
+
+  const replyToDelete = { postId: replyId };
+
+  switch (category) {
+    case 'st':
+      await STPost.findOneAndUpdate(
+        { postId, isTopic: true }, 
+        { $inc: {topicChildren: -1} }, 
+        { new: true }
+      );
+      
+      await STPost.findOneAndDelete(replyToDelete)
+        .then(res.send(`Successfully deleted ${category}#${replyId}`))
+        .catch(err => console.log(err));
+      break;
+    case 'vg':
+      await VGPost.findOneAndUpdate(
+        { postId, isTopic: true }, 
+        { $inc: {topicChildren: -1} }, 
+        { new: true }
+      );
+      
+      await VGPost.findOneAndDelete(replyToDelete)
+        .then(res.send(`Successfully deleted ${category}#${replyId}`))
+        .catch(err => console.log(err));
+      break;
+    case 'mp':
+      await MPPost.findOneAndUpdate(
+        { postId, isTopic: true }, 
+        { $inc: {topicChildren: -1} }, 
+        { new: true }
+      );
+      
+      await MPPost.findOneAndDelete(replyToDelete)
+        .then(res.send(`Successfully deleted ${category}#${replyId}`))
+        .catch(err => console.log(err));
+      break;
+    case 'tb':
+      await TBPost.findOneAndUpdate(
+        { postId, isTopic: true }, 
+        { $inc: {topicChildren: -1} }, 
+        { new: true }
+      );
+
+      await TBPost.findOneAndDelete(replyToDelete)
+        .then(res.send(`Successfully deleted ${category}#${replyId}`))
+        .catch(err => console.log(err));
+      break;
+    default:
+      throw new Error('Reply does not exist,');
   };
 });
 
