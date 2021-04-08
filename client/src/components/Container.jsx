@@ -5,6 +5,8 @@ import Categories from './Categories';
 import Topics from './Topics';
 import Replies from './Replies';
 import PostSuccess from './PostSuccess';
+import Faq from './Faq';
+import Rules from './Rules';
 import NotFound from './NotFound';
 import Footer from './Footer';
 
@@ -55,7 +57,9 @@ const Container = () => {
       };
     };
 
-    if (currentPath !== '/' && currentPath !== '/not-found' && !currentPath.includes('success')) fetchContent();
+    if (
+      currentPath !== '/' && currentPath !== '/not-found' && currentPath !== '/faq' && currentPath !== '/rules' && !currentPath.includes('success')
+    ) fetchContent();
 
     return function cleanup() {
       isActive = false;
@@ -129,6 +133,8 @@ const Container = () => {
           {formatReplyViewRoutes(categories)}
           <Route path='/:categorySlug/success' component={PostSuccess} />
           {formatTopicViewRoutes(categories)}
+          <Route path='/faq' component={Faq} />
+          <Route path='/rules' component={Rules} />
           <Route path='/not-found' component={NotFound} />
           <Route exact path='/'>
             <Categories categories={categories} />

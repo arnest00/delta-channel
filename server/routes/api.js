@@ -65,8 +65,6 @@ router.post('/:category', async (req, res) => {
     topicLatest: timestamp
   };
 
-  if (!newReply.postContent) throw new Error('Post content is empty.');
-
   switch (category) {
     case 'st':
       STPost.create(newTopic)
@@ -94,6 +92,30 @@ router.post('/:category', async (req, res) => {
 });
 
 // ====== Delete topic and replies
+router.delete('/:category/topic/:postId', async (req, res) => {
+  const { category, postId } = req.params;
+  let fetchedParent;
+  let feedback = '';
+
+  switch (category) {
+    case 'tb':
+      fetchedParent = await TBPost.findOne({ postId: postId });
+
+      await TBPost.deleteMany({ replyParent: fetchedParent._id })
+        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
+        .catch(err => console.log(err));
+
+      await TBPost.deleteOne({ postId: postId })
+        .then(res => {
+          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
+          console.log(feedback);
+        })
+        .catch(err => console.log(err));
+      break;
+    default:
+      throw new Error('Topic does not exist');
+  };
+});
 
 // ====== Index replies to topic
 router.get('/:category/topic/:postId', (req, res) => {
@@ -169,8 +191,6 @@ router.post('/:category/topic/:postId', async (req, res) => {
     timestamp, 
     author: req.body.postAuthor
   };
-
-  if (!newReply.postContent) throw new Error('Post content is empty.');
 
   switch (category) {
     case 'st':

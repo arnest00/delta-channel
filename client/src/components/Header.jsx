@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Header = ({ header, categories }) => {
   const formatCategoryLinks = categories => {
-    return categories.map(c => (
-      <React.Fragment>
-        <Link to={c.categorySlug}>{c.categorySlug}</Link>
+    return categories.map((c, idx) => (
+      <React.Fragment key={idx}>
+        <Link to={`/${c.categorySlug}`}>{c.categorySlug}</Link>
       </React.Fragment>
     ));
   };
