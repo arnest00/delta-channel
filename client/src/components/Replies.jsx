@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
-import Button from './Button';
 import PostForm from './PostForm';
 import NowLoading from './NowLoading';
-import NotFound from './NotFound';
 
-const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) => {
+const Replies = ({ replies, categorySlug, isLoading }) => {
   const { postId } = useParams();
 
   const formatReplies = replies => {
@@ -26,10 +24,6 @@ const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) =>
     ));
   };
 
-  if (isNaN(postId)) {
-    return <NotFound />
-  };
-
   return (  
     <article>
       <nav id='replies-navigation'>
@@ -38,18 +32,10 @@ const Replies = ({ replies, categorySlug, formIsActive, isLoading, onClick }) =>
       </nav>
       <h2>replies to {categorySlug}#{postId}</h2>
 
-      {!formIsActive && 
-        <Button 
-          onClick={onClick}
-          content='Reply to Topic'
-        />
-      }
-      {formIsActive && 
-        <PostForm 
-          onCancel={onClick}
-          formRoute={`${categorySlug}/topic/${postId}`}
-        />
-      }
+      <PostForm 
+        formAction='Reply to Topic'
+        formRoute={`${categorySlug}/topic/${postId}`}
+      />
 
       {isLoading && <NowLoading />}
       {formatReplies(replies)}

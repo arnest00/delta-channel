@@ -98,6 +98,48 @@ router.delete('/:category/topic/:postId', async (req, res) => {
   let feedback = '';
 
   switch (category) {
+    case 'st':
+      fetchedParent = await STPost.findOne({ postId: postId });
+
+      await STPost.deleteMany({ replyParent: fetchedParent._id })
+        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
+        .catch(err => console.log(err));
+
+      await STPost.deleteOne({ postId: postId })
+        .then(res => {
+          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
+          console.log(feedback);
+        })
+        .catch(err => console.log(err));
+      break;
+    case 'vg':
+      fetchedParent = await VGPost.findOne({ postId: postId });
+
+      await VGPost.deleteMany({ replyParent: fetchedParent._id })
+        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
+        .catch(err => console.log(err));
+
+      await VGPost.deleteOne({ postId: postId })
+        .then(res => {
+          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
+          console.log(feedback);
+        })
+        .catch(err => console.log(err));
+      break;
+    case 'mp':
+      fetchedParent = await MPPost.findOne({ postId: postId });
+
+      await MPPost.deleteMany({ replyParent: fetchedParent._id })
+        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
+        .catch(err => console.log(err));
+
+      await MPPost.deleteOne({ postId: postId })
+        .then(res => {
+          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
+          console.log(feedback);
+        })
+        .catch(err => console.log(err));
+      break;
     case 'tb':
       fetchedParent = await TBPost.findOne({ postId: postId });
 
@@ -169,7 +211,7 @@ router.get('/:category/topic/:postId', (req, res) => {
             })
             .catch(err => console.log(err));
         })
-        .catch(err => console.log(err));
+        .catch(err => res.status(500).send('An error occurred.'));
       break;
     default:
       throw new Error('Topic does not exist.');

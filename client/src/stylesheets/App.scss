@@ -1,5 +1,4 @@
 @import 'Header';
-@import 'Container';
 @import 'Footer';
 
 pre {
@@ -10,4 +9,8 @@ pre {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+
+  main {
+    flex: 1;
+  }
 }
