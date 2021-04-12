@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = ({ path, categories }) => {
-  const formatCategoryLinks = categories => {
+const Header = ({ path, categories, onChange }) => {
+  const formatCategoryOptions = categories => {
     return categories.map((c, idx) => (
-      <React.Fragment key={idx}>
-        <Link to={`/${c.categorySlug}`}>{c.categorySlug}</Link>
-      </React.Fragment>
+      <option key={idx} value={c.categorySlug}>
+        {c.categoryName}
+      </option>
     ));
   };
 
@@ -28,10 +28,12 @@ const Header = ({ path, categories }) => {
   };
 
   return ( 
-    <header id="Header">
-      <nav className="header-navigation">
+    <header id='Header'>
+      <nav id='header-navigation'>
         <div>
-          {formatCategoryLinks(categories)}
+          <select id='category-selector' onChange={onChange}>
+            {formatCategoryOptions(categories)}
+          </select>
         </div>
         <div>
           <Link to='/'>home</Link>

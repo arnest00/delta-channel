@@ -38,6 +38,7 @@ function App() {
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ theme, setTheme ] = useState('light');
 
   const { pathname } = useLocation();
   let history = useHistory();
@@ -97,10 +98,23 @@ function App() {
     ));
   };
 
+  const handleCategorySelect = e => {
+    const selectedCategory = e.target.value;
+
+    history.push(`/${selectedCategory}`);
+  };
+
+  const handleThemeSelect = e => {
+    const selectedTheme = e.target.value;
+
+    setTheme(selectedTheme);
+  }
+
   return (
     <div id='App'>
+      <div id='top'></div>
       <Title path={pathname.slice(1,3)} categories={categories} />
-      <Header path={pathname.slice(1,3)} categories={categories} />
+      <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>
         <Switch>
           <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />
@@ -116,7 +130,8 @@ function App() {
           <Redirect to='/not-found' />
         </Switch>
       </main>
-      <Footer />
+      <Footer onChange={handleThemeSelect} />
+      <div id='bottom'></div>
     </div>
   );
 };
