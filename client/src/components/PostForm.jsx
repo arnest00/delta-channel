@@ -58,7 +58,7 @@ const PostForm = ({ formAction, formRoute }) => {
       {formIsActive && <form onSubmit={handleSubmit}>
         <div>
           <label>
-            Name 
+            Name:
             <input 
               type='text'
               name='post-author'
@@ -70,7 +70,7 @@ const PostForm = ({ formAction, formRoute }) => {
         
         <div>
           <label>
-            Content
+            Content:
             <textarea 
               name='post-content'
               rows='6'

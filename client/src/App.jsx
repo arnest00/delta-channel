@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
+import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
 import PostSuccess from './components/PostSuccess';
@@ -10,44 +11,26 @@ import Rules from './components/Rules';
 import Categories from './components/Categories';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
+import { getCategories } from './services/categoryService';
+import { getThemes } from './services/themeService';
 import './stylesheets/App.scss';
 
 function App() {
-  const categories = [
-    {
-      categorySlug: 'mp', 
-      categoryName: 'movingPictures', 
-      categoryDescription: 'Movies and television'
-    }, 
-    {
-      categorySlug: 'st', 
-      categoryName: 'smallTalk', 
-      categoryDescription: <React.Fragment><i>n.</i> <b>1.</b> polite conversation about unimportant things</React.Fragment>
-    }, 
-    {
-      categorySlug: 'vg', 
-      categoryName: 'videoGames', 
-      categoryDescription: 'Console, PC, retro'
-    }, 
-    {
-      categorySlug: 'tb', 
-      categoryName: 'testBoard', 
-      categoryDescription: 'Test posting on deltaChannel'
-    }, 
-  ];
+  const categories = getCategories();
+  const themes = getThemes();
+
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
-  const [ theme, setTheme ] = useState('light');
+  const [ currentTheme, setCurrentTheme ] = useState('lite');
 
   const { pathname } = useLocation();
   let history = useHistory();
 
   useEffect(() => {
-    setContent([]);
-    setCurrentPath(pathname);
-
+    const staticRoutes = [ '/', '/not-found', '/faq', '/rules' ];
     let isActive = true;
+
     const fetchContent = () => {
       setIsLoading(true);
 
@@ -66,13 +49,14 @@ function App() {
         .catch(err => console.log(err));
     };
 
-    const staticRoutes = [ '/', '/not-found', '/faq', '/rules' ];
+    setContent([]);
+    setCurrentPath(pathname);
     if (!staticRoutes.includes(currentPath) && !currentPath.includes('success')) fetchContent();
 
     return function cleanup() {
       isActive = false;
     };
-  }, [ history, pathname, currentPath ]);
+  }, [ pathname, currentPath, history ]);
 
   const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
@@ -107,12 +91,15 @@ function App() {
   const handleThemeSelect = e => {
     const selectedTheme = e.target.value;
 
-    setTheme(selectedTheme);
-  }
+    if (selectedTheme === currentTheme) return;
+
+    setCurrentTheme(selectedTheme);
+  };
 
   return (
     <div id='App'>
       <div id='top'></div>
+      <Theme themes={themes} currentTheme={currentTheme} />
       <Title path={pathname.slice(1,3)} categories={categories} />
       <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>
@@ -130,7 +117,7 @@ function App() {
           <Redirect to='/not-found' />
         </Switch>
       </main>
-      <Footer onChange={handleThemeSelect} />
+      <Footer themes={themes} onChange={handleThemeSelect} />
       <div id='bottom'></div>
     </div>
   );

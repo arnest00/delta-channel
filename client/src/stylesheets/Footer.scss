@@ -1,4 +1,9 @@
-#Footer {
+#footer-navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+#footer-disclaimer {
   font-size: 0.81em;
   text-align: center;
 }

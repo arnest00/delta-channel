@@ -31,11 +31,15 @@ const Header = ({ path, categories, onChange }) => {
     <header id='Header'>
       <nav id='header-navigation'>
         <div>
-          <select id='category-selector' onChange={onChange}>
-            {formatCategoryOptions(categories)}
-          </select>
+          <label>
+            Category:
+            <select id='category-selector' onChange={onChange}>
+              {formatCategoryOptions(categories)}
+            </select>
+          </label>
         </div>
         <div>
+          <a href="#bottom">▼</a>
           <Link to='/'>home</Link>
           <Link to='/faq'>faq</Link>
           <Link to='/rules'>rules</Link>
