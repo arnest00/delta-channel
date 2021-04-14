@@ -11,18 +11,16 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
     });
 
     const formattedTopics = sortedTopics.map(t => (
-      <section key={t.postId}>
-        <header>
-          <div>
-            <h3>#{t.postId}</h3>
-            <Link to={`/${categorySlug}/topic/${t.postId}`} className='expand'>View Topic ({t.topicChildren} replies)</Link>
-          </div>
-          <div>
-            <span>{t.author}</span>
-            <span>Last Reply {formatDate(t.topicLatest)}</span>
+      <section key={t.postId} className='post-card'>
+        <header className='post-header'>
+          <h3 className='post-number'>#{t.postId}</h3>
+          <div className='post-info-container'>
+            <span>Author: {t.author}</span>
+            <span>Last Reply: {formatDate(t.topicLatest)}</span>
           </div>
         </header>
-        <pre>{t.postContent}</pre>
+        <pre className='post-content'>{t.postContent}</pre>
+        <Link to={`/${categorySlug}/topic/${t.postId}`} className='expand'>View Topic ({t.topicChildren} replies)</Link>
       </section>
     ));
 

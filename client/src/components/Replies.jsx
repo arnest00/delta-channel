@@ -9,17 +9,15 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
 
   const formatReplies = replies => {
     return replies.map(r => (
-      <section key={r.postId}>
-        <header>
-          <div>
-            <h3>#{r.postId}</h3>
-          </div>
-          <div>
-            <span>{r.author}</span>
-            <time dateTime={r.timestamp}>{formatDate(r.timestamp)}</time>
+      <section key={r.postId} className='post-card'>
+        <header className='post-header'>
+          <h3 className='post-number'>#{r.postId}</h3>
+          <div className='post-info-container'>
+            <span>Author: {r.author}</span>
+            <time dateTime={r.timestamp}>Posted: {formatDate(r.timestamp)}</time>
           </div>
         </header>
-        <pre>{r.postContent}</pre>
+        <pre className='post-content'>{r.postContent}</pre>
       </section>
     ));
   };

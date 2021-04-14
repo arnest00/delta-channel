@@ -15,9 +15,7 @@ const Header = ({ path, categories, onChange }) => {
       if (path === categories[i].categorySlug) {
         return (
           <React.Fragment>
-            <h1>
-              {categories[i].categoryName}
-            </h1>
+            <h1>{categories[i].categoryName}</h1>
             {categories[i].categoryDescription && <span>{categories[i].categoryDescription}</span>}
           </React.Fragment>
         );
@@ -33,7 +31,8 @@ const Header = ({ path, categories, onChange }) => {
         <div>
           <label>
             Category:
-            <select id='category-selector' onChange={onChange}>
+            <select id='category-selector' onChange={onChange} defaultValue={''}>
+              <option value='' disabled>--Select category--</option>
               {formatCategoryOptions(categories)}
             </select>
           </label>
@@ -41,7 +40,7 @@ const Header = ({ path, categories, onChange }) => {
         <div>
           <a href="#bottom">▼</a>
           <Link to='/'>home</Link>
-          <Link to='/faq'>faq</Link>
+          <Link to='/about'>about</Link>
           <Link to='/rules'>rules</Link>
         </div>
       </nav>

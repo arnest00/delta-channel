@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
-import Theme from './components/Theme';
+// import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
 import PostSuccess from './components/PostSuccess';
 import Replies from './components/Replies';
 import Topics from './components/Topics';
-import Faq from './components/Faq';
+import About from './components/About';
 import Rules from './components/Rules';
 import Categories from './components/Categories';
 import NotFound from './components/NotFound';
@@ -22,13 +22,13 @@ function App() {
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
-  const [ currentTheme, setCurrentTheme ] = useState('lite');
+  // const [ currentTheme, setCurrentTheme ] = useState('lite');
 
   const { pathname } = useLocation();
   let history = useHistory();
 
   useEffect(() => {
-    const staticRoutes = [ '/', '/not-found', '/faq', '/rules' ];
+    const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
     let isActive = true;
 
     const fetchContent = () => {
@@ -85,21 +85,29 @@ function App() {
   const handleCategorySelect = e => {
     const selectedCategory = e.target.value;
 
+    e.target.value = '';
+
+    if (selectedCategory === currentPath.slice(1)) return;
     history.push(`/${selectedCategory}`);
   };
+
+  // const handleThemeSelect = e => {
+  //   const selectedTheme = e.target.value;
+
+  //   if (selectedTheme === currentTheme) return;
+  //   setCurrentTheme(selectedTheme);
+  // };
 
   const handleThemeSelect = e => {
     const selectedTheme = e.target.value;
 
-    if (selectedTheme === currentTheme) return;
-
-    setCurrentTheme(selectedTheme);
+    console.log(selectedTheme);
   };
 
   return (
     <div id='App'>
       <div id='top'></div>
-      <Theme themes={themes} currentTheme={currentTheme} />
+      {/* <Theme themes={themes} currentTheme={currentTheme} /> */}
       <Title path={pathname.slice(1,3)} categories={categories} />
       <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>
@@ -108,7 +116,7 @@ function App() {
           {formatReplyViewRoutes(categories)}
           <Route path='/:categorySlug/success' component={PostSuccess} />
           {formatTopicViewRoutes(categories)}
-          <Route path='/faq' component={Faq} />
+          <Route path='/about' component={About} />
           <Route path='/rules' component={Rules} />
           <Route path='/not-found' component={NotFound} />
           <Route exact path='/'>

@@ -1,8 +1,27 @@
 @import 'Header';
+@import 'Posts';
 @import 'Footer';
 
-pre {
-  white-space: pre-wrap;
+:root {
+  --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --primary-100: rgb(200, 216, 151);
+  --primary-300: rgb(98, 203, 42);
+  --primary-500: rgb(6, 116, 6);
+  --primary-700: rgb(3, 89, 39);
+  --primary-900: rgb(1, 60, 31);
+  --neutral-100: rgb(245, 245, 245);
+  --neutral-300: rgb(191, 191, 191);
+  --neutral-500: rgb(138, 138, 138);
+  --neutral-700: rgb(84, 84, 84);
+  --neutral-900: rgb(31, 31, 31);
+}
+
+body {
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--neutral-900);
+  background-color: var(--neutral-100);
 }
 
 #App {
