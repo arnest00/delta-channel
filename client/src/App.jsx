@@ -42,6 +42,7 @@ function App() {
               .then(data => {
                 setContent(data);
                 setIsLoading(false);
+                window.scrollTo(0, 0);
               })
               .catch(err => console.log(err));
           };

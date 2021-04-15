@@ -19,8 +19,12 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
             <span>Last Reply: {formatDate(t.topicLatest)}</span>
           </div>
         </header>
-        <pre className='post-content'>{t.postContent}</pre>
-        <Link to={`/${categorySlug}/topic/${t.postId}`} className='expand'>View Topic ({t.topicChildren} replies)</Link>
+        <div className='post-content-container'>
+          <pre className='post-content'>{t.postContent}</pre>
+        </div>
+        <div className="post-link-container">
+          <Link to={`/${categorySlug}/topic/${t.postId}`}>View Topic ({t.topicChildren} replies)</Link>
+        </div>
       </section>
     ));
 
@@ -28,8 +32,8 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
   };
   
   return ( 
-    <article>
-      <nav id='topics-navigation'>
+    <article id='posts'>
+      <nav id='posts-navigation'>
         <Link to='/'>back to categories</Link>
       </nav>
       <h2>topics in {categorySlug}</h2>

@@ -52,8 +52,8 @@ const PostForm = ({ formAction, formRoute }) => {
   };
 
   return ( 
-    <React.Fragment>
-      {!formIsActive && <Button onClick={handleCancel} content={formAction} />}
+    <div id='form-container'>
+      {!formIsActive && <Button onClick={handleCancel} content={formAction} id='new-button'/>}
 
       {formIsActive && <form onSubmit={handleSubmit}>
         <div>
@@ -83,7 +83,7 @@ const PostForm = ({ formAction, formRoute }) => {
         <Button content={'Post'} type='submit' disabled={postDisabled} />
         <Button onClick={handleCancel} content={'Cancel'} />
       </form>}
-    </React.Fragment>
+    </div>
   );
 };
  

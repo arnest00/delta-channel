@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Categories = ({ categories }) => {
   const formatCategories = categories => {
     return categories.map((c, idx) => (
-      <section key={idx}>
+      <section key={idx} className='category'>
         <h3>
           <Link to={`/${c.categorySlug}`}>{c.categoryName}</Link>
         </h3>
@@ -14,7 +14,7 @@ const Categories = ({ categories }) => {
   };
   
   return ( 
-    <article>
+    <article id='Categories'>
       <h2>categories</h2>
       {formatCategories(categories)}
     </article>

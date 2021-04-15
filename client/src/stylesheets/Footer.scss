@@ -1,9 +1,16 @@
-#footer-navigation {
-  display: flex;
-  justify-content: space-between;
-}
+#Footer {
+  padding: 1em 0;
+  border-top: 1px solid var(--neutral-600);
 
-#footer-disclaimer {
-  font-size: 0.81em;
-  text-align: center;
+  #footer-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0.42em 0.42em 0.42em;
+  }
+  
+  #footer-disclaimer {
+    font-size: 0.81em;
+    text-align: center;
+  }
 }

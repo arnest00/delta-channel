@@ -1,12 +1,35 @@
-#header-navigation {
-  display: flex;
-  justify-content: space-between;
-}
+#Header {
+  border-bottom: 1px solid var(--neutral-600);
+  
+  #header-navigation {
+    padding: 0.42em 0.33em;
+    background-color: var(--neutral-300);
+    display: flex;
+    flex-direction: column;
 
-#header-content{
-  text-align: center;
+    a {
+      margin-left: 0.81em;
+    }
 
-  span {
-    color: var(--neutral-700);
+    div:nth-of-type(1) {
+      margin-bottom: 0.42em;
+    }
+
+    div:nth-of-type(2) {
+      align-self: flex-end;
+    }
+  }
+  
+  #header-content{
+    text-align: center;
+    margin-bottom: 0.42em;
+
+    h1 {
+      margin: 0.63em 0;
+    }
+  
+    span {
+      color: var(--neutral-800);
+    }
   }
 }

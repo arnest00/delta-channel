@@ -17,14 +17,16 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
             <time dateTime={r.timestamp}>Posted: {formatDate(r.timestamp)}</time>
           </div>
         </header>
-        <pre className='post-content'>{r.postContent}</pre>
+        <div className='post-content-container'>
+          <pre className='post-content'>{r.postContent}</pre>
+        </div>
       </section>
     ));
   };
 
   return (  
-    <article>
-      <nav id='replies-navigation'>
+    <article id='posts'>
+      <nav id='posts-navigation'>
         <Link to={`/`}>back to categories</Link>
         <Link to={`/${categorySlug}`}>back to topics</Link>
       </nav>
