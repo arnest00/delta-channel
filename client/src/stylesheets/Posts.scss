@@ -1,8 +1,14 @@
+.expanded {
+  padding-bottom: 6.3em;
+}
+
 #posts {
   margin: 0 0.33em;
 
-  #posts-navigation {
-    margin: 0.42em 0;
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.42em;
   }
 
   .post-card {
@@ -46,6 +52,14 @@
       a {
         font-size: 0.81em;
       }
+    }
+  }
+
+  #posts-navigation {
+    margin: 0.42em 0;
+
+    a {
+      margin-right: 0.81em;
     }
   }
 }

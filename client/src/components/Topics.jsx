@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
+import Button from './common/Button';
 import PostForm from './PostForm';
 import NowLoading from './NowLoading';
 
 const Topics = ({ topics, categorySlug, isLoading }) => {
+  const [ formIsActive, setFormIsActive ] = useState(false);
+
   const formatTopics = topics => {
     const sortedTopics = topics.sort((a, b) => {
       return (a.topicLatest > b.topicLatest) ? -1 : ((a.topicLatest < b.topicLatest) ? 1 : 0);
@@ -30,21 +33,30 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
 
     return formattedTopics;
   };
+
+  const handleCancel = () => {
+    setFormIsActive(!formIsActive);
+  };
   
   return ( 
-    <article id='posts'>
+    <article id='posts' className={formIsActive ? 'expanded' : ''}>
       <nav id='posts-navigation'>
         <Link to='/'>back to categories</Link>
       </nav>
       <h2>topics in {categorySlug}</h2>
 
-      <PostForm 
-        formAction='Create new Topic'
-        formRoute={categorySlug}
-      />
+      <div className="button-container">
+        {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
+      </div>
 
       {isLoading && <NowLoading />}
       {formatTopics(topics)}
+
+      {formIsActive && <PostForm 
+        formRoute={categorySlug}
+        onClick={handleCancel}
+        formIsActive={formIsActive}
+      />}
     </article>
   );
 }

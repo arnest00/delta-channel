@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom';
 import fetch from 'node-fetch';
 import Button from './common/Button';
 
-const PostForm = ({ formAction, formRoute }) => {
+const PostForm = ({ formRoute, onClick, formIsActive }) => {
   const [ formContent, setFormContent ] = useState({ postAuthor: 'Anonymous', postContent: '' });
-  const [ formIsActive, setFormIsActive ] = useState(false);
   const [ postDisabled, setPostDisabled ] = useState(true);
   const [ error, setError ] = useState(null);
   let history = useHistory();
@@ -40,48 +39,48 @@ const PostForm = ({ formAction, formRoute }) => {
     })
       .then(res => {
         if (res.ok) {
-          setFormIsActive(false);
+          onClick();
           history.push(`/${formRoute}/success`);
         };
       })
       .catch(err => console.log(err));
   };
 
-  const handleCancel = () => {
-    setFormIsActive(!formIsActive);
-  };
-
   return ( 
     <div id='form-container'>
-      {!formIsActive && <Button onClick={handleCancel} content={formAction} id='new-button'/>}
 
-      {formIsActive && <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Name:
-            <input 
-              type='text'
-              name='post-author'
-              placeholder='Anonymous'
-              onChange={handleInputChange}
-            ></input>
-          </label>
-        </div>
-        
-        <div>
-          <label>
-            Content:
-            <textarea 
-              name='post-content'
-              rows='6'
-              onChange={handleTextareaChange}
-            ></textarea>
-          </label>
-          { error && <span>{error}</span>}
+      {formIsActive && <form onSubmit={handleSubmit} className='form'>
+        <div className="form-group">
+          <div className='input-group'>
+            <label>
+              Name:
+              <input 
+                type='text'
+                name='post-author'
+                placeholder='Anonymous'
+                onChange={handleInputChange}
+              ></input>
+            </label>
+          </div>
+          
+          <div className='input-group'>
+            <label>
+              Content:
+              <textarea 
+                name='post-content'
+                rows='6'
+                autoFocus
+                onChange={handleTextareaChange}
+              ></textarea>
+            </label>
+            { error && <span>{error}</span>}
+          </div>
         </div>
 
-        <Button content={'Post'} type='submit' disabled={postDisabled} />
-        <Button onClick={handleCancel} content={'Cancel'} />
+        <div className='button-group'>
+          <Button onClick={onClick} content={'Cancel'} className='button cancel-button' />
+          <Button content={'Post'} type='submit' disabled={postDisabled} className='button post-button' />
+        </div>
       </form>}
     </div>
   );

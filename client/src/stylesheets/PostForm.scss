@@ -2,4 +2,44 @@
   display: flex;
   justify-content: center;
   margin-bottom: 0.42em;
+  
+  .form {
+    position: fixed;
+    bottom: 0;
+    padding: 0.63em 0;
+    width: 100%;
+    max-width: 100vw;
+    background: var(--neutral-300);
+    border-top: 1px solid var(--neutral-600);
+    display: flex;
+
+    .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0.33em;
+
+      .input-group label {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      padding: 0 0.33em;
+
+      button {
+        flex: 1;
+        color: var(--neutral-100);
+        background-color: var(--primary-300);
+      }
+
+      button:disabled {
+        color: var(--neutral-500);
+        background-color: var(--primary-700);
+      }
+    }
+  }
 }

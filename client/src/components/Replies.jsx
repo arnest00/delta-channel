@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
+import Button from './common/Button';
 import PostForm from './PostForm';
 import NowLoading from './NowLoading';
 
 const Replies = ({ replies, categorySlug, isLoading }) => {
+  const [ formIsActive, setFormIsActive ] = useState(false);
   const { postId } = useParams();
 
   const formatReplies = replies => {
@@ -24,21 +26,30 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
     ));
   };
 
+  const handleCancel = () => {
+    setFormIsActive(!formIsActive);
+  };
+
   return (  
-    <article id='posts'>
+    <article id='posts' className={formIsActive ? 'expanded' : ''}>
       <nav id='posts-navigation'>
         <Link to={`/`}>back to categories</Link>
         <Link to={`/${categorySlug}`}>back to topics</Link>
       </nav>
       <h2>replies to {categorySlug}#{postId}</h2>
 
-      <PostForm 
-        formAction='Reply to Topic'
-        formRoute={`${categorySlug}/topic/${postId}`}
-      />
+      <div className="button-container">
+        {!formIsActive && <Button onClick={handleCancel} content='Reply to Topic' className='button new-button'/>}
+      </div>
 
       {isLoading && <NowLoading />}
       {formatReplies(replies)}
+
+      {formIsActive && <PostForm 
+        formRoute={`${categorySlug}/topic/${postId}`}
+        onClick={handleCancel}
+        formIsActive={formIsActive}
+      />}
     </article>
   );
 };
