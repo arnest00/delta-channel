@@ -13,7 +13,7 @@
 
   .post-card {
     margin-bottom: 0.42em;
-    background-color: var(--neutral-300);
+    background-color: var(--background-300);
     
     .post-header {
       padding: 0.42em 0.63em;
@@ -28,7 +28,7 @@
       .post-info-container {
         display: flex;
         flex-direction: column;
-        color: var(--neutral-800);
+        color: var(--font-800);
         font-size: 0.81em;
         text-align: right;
       }
@@ -36,7 +36,7 @@
   
     .post-content-container {
       padding: 0.63em 0.81em;
-      background-color: var(--neutral-200);
+      background-color: var(--background-200);
       
       .post-content {
         margin: 0;

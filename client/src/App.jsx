@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
-// import Theme from './components/Theme';
+import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
 import PostSuccess from './components/PostSuccess';
@@ -22,7 +22,7 @@ function App() {
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
-  // const [ currentTheme, setCurrentTheme ] = useState('lite');
+  const [ currentTheme, setCurrentTheme ] = useState('lite');
 
   const { pathname } = useLocation();
   let history = useHistory();
@@ -92,23 +92,17 @@ function App() {
     history.push(`/${selectedCategory}`);
   };
 
-  // const handleThemeSelect = e => {
-  //   const selectedTheme = e.target.value;
-
-  //   if (selectedTheme === currentTheme) return;
-  //   setCurrentTheme(selectedTheme);
-  // };
-
   const handleThemeSelect = e => {
     const selectedTheme = e.target.value;
 
-    console.log(selectedTheme);
+    if (selectedTheme === currentTheme) return;
+    setCurrentTheme(selectedTheme);
   };
 
   return (
     <div id='App'>
       <div id='top'></div>
-      {/* <Theme themes={themes} currentTheme={currentTheme} /> */}
+      <Theme themes={themes} currentTheme={currentTheme} />
       <Title path={pathname.slice(1,3)} categories={categories} />
       <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>

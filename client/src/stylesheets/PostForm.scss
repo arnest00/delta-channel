@@ -9,7 +9,7 @@
     padding: 0.63em 0;
     width: 100%;
     max-width: 100vw;
-    background: var(--neutral-300);
+    background: var(--background-300);
     border-top: 1px solid var(--neutral-600);
     display: flex;
 
@@ -31,6 +31,7 @@
       padding: 0 0.33em;
 
       button {
+        border: none;
         flex: 1;
         color: var(--neutral-100);
         background-color: var(--primary-300);
