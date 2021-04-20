@@ -4,14 +4,47 @@ const express = require('express'),
 const { STPost, VGPost, MPPost, TBPost } = require('../models/Post');
 const Sequence = require('../models/Sequence');
 
+const getModel = category => {
+  switch (category) {
+    case 'st':
+      return STPost;
+    case 'vg':
+      return VGPost;
+    case 'mp':
+      return MPPost;
+    case 'tb':
+      return TBPost;
+    default:
+      throw new Error('Category does not exist.');
+  };
+};
+
 const getNextPostId = async (seqName) => {
-  const updatedPostIdDoc = await Sequence.findOneAndUpdate(
-    { seqName }, 
-    { $inc: { seqValue: 1 } }, 
-    { new: true }
-  );
+  let updatedPostIdDoc;
+
+  try {
+    updatedPostIdDoc = await Sequence.findOneAndUpdate(
+      { seqName }, 
+      { $inc: { seqValue: 1 } }, 
+      { new: true }
+    );
+  } catch (e) {
+    throw new Error('Sequence does not exist.');
+  };
 
   return updatedPostIdDoc.seqValue;
+};
+
+const getParent = async (model, postId) => {
+  let fetchedParent;
+
+  try {
+    fetchedParent = await model.findOne({ postId });
+  } catch (e) {
+    throw new Error('Topic does not exist.');
+  };
+
+  return fetchedParent;
 };
 
 router.get('/', (req, res) => {
@@ -19,333 +52,122 @@ router.get('/', (req, res) => {
 });
 
 // ====== Index topics
-router.get('/:category', (req, res) => {
-  const category = req.params.category;
+router.get('/:category', async (req, res) => {
+  const { category } = req.params;
+  const model = getModel(category);
 
-  switch (category) {
-    case 'st':
-      STPost.find({ isTopic: true })
-        .then(posts => res.send(posts))
-        .catch(err => console.log(err));
-      break;
-    case 'vg':
-      VGPost.find({ isTopic: true })
-        .then(posts => res.send(posts))
-        .catch(err => console.log(err));
-      break;
-    case 'mp':
-      MPPost.find({ isTopic: true })
-        .then(posts => res.send(posts))
-        .catch(err => console.log(err));
-      break;
-    case 'tb':
-      TBPost.find({ isTopic: true })
-        .then(posts => res.send(posts))
-        .catch(err => console.log(err));
-      break;
-    default:
-      throw new Error('Category does not exist.');
+  try {
+    const posts = await model.find({ isTopic: true });
+    res.send(posts);
+  } catch (e) {
+    throw new Error('Could not retrieve topics.');
   };
 });
 
 // ====== Create topic
 router.post('/:category', async (req, res) => {
-  const category = req.params.category;
+  const { category } = req.params;
+  const model = getModel(category);
   const sequence = `${category}PostId`;
   const postId = await getNextPostId(sequence);
   const timestamp = new Date().toISOString();
 
   const newTopic = {
     postId, 
-    postContent: req.body.postContent, 
     timestamp, 
     author: req.body.postAuthor, 
+    postContent: req.body.postContent, 
     isTopic: true, 
     topicChildren: 0, 
     topicLatest: timestamp
   };
 
-  switch (category) {
-    case 'st':
-      STPost.create(newTopic)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-      break;
-    case 'vg':
-      VGPost.create(newTopic)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-      break;
-    case 'mp':
-      MPPost.create(newTopic)
-        .then(res.json('Post succeeded!'))
-        .catch(err => console.log(err));
-      break;
-    case 'tb':
-      TBPost.create(newTopic)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-      break;
-    default:
-      throw new Error('Category does not exist.');
+  try {
+    await model.create(newTopic);
+    res.send('Post succeeded!');
+  } catch (e) {
+    throw new Error('Could not post topic.');
   };
 });
 
 // ====== Delete topic and replies
 router.delete('/:category/topic/:postId', async (req, res) => {
   const { category, postId } = req.params;
-  let fetchedParent;
-  let feedback = '';
+  const model = getModel(category);
+  const parent = await getParent(model, postId);
 
-  switch (category) {
-    case 'st':
-      fetchedParent = await STPost.findOne({ postId: postId });
-
-      await STPost.deleteMany({ replyParent: fetchedParent._id })
-        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
-        .catch(err => console.log(err));
-
-      await STPost.deleteOne({ postId: postId })
-        .then(res => {
-          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
-          console.log(feedback);
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'vg':
-      fetchedParent = await VGPost.findOne({ postId: postId });
-
-      await VGPost.deleteMany({ replyParent: fetchedParent._id })
-        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
-        .catch(err => console.log(err));
-
-      await VGPost.deleteOne({ postId: postId })
-        .then(res => {
-          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
-          console.log(feedback);
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'mp':
-      fetchedParent = await MPPost.findOne({ postId: postId });
-
-      await MPPost.deleteMany({ replyParent: fetchedParent._id })
-        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
-        .catch(err => console.log(err));
-
-      await MPPost.deleteOne({ postId: postId })
-        .then(res => {
-          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
-          console.log(feedback);
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'tb':
-      fetchedParent = await TBPost.findOne({ postId: postId });
-
-      await TBPost.deleteMany({ replyParent: fetchedParent._id })
-        .then(feedback = feedback + `Successfully deleted replies to ${category}#${fetchedParent.postId}`)
-        .catch(err => console.log(err));
-
-      await TBPost.deleteOne({ postId: postId })
-        .then(res => {
-          feedback = feedback + `2 Successfully deleted ${category}#${fetchedParent.postId}`;
-          console.log(feedback);
-        })
-        .catch(err => console.log(err));
-      break;
-    default:
-      throw new Error('Topic does not exist');
+  try {
+    await model.deleteMany({ replyParent: parent._id });
+    await model.deleteOne({ postId: postId });
+    res.send('Deletion succeeded!')
+  } catch (e) {
+    throw new Error('Could not delete topic and its replies.');
   };
 });
 
 // ====== Index replies to topic
-router.get('/:category/topic/:postId', (req, res) => {
-  const category = req.params.category;
-  const topicId = req.params.postId;
+router.get('/:category/topic/:postId', async (req, res) => {
+  const { category, postId: topicId } = req.params;
+  const model = getModel(category);
+  const parent = await getParent(model, topicId);
 
-  switch (category) {
-    case 'st':
-      STPost.findOne({ postId: topicId, isTopic: true })
-        .then(fetchedParent => {
-          STPost.find({ replyParent: fetchedParent._id })
-            .then(posts => {
-              posts.unshift(fetchedParent);
-              res.send(posts);
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'vg':
-      VGPost.findOne({ postId: topicId, isTopic: true })
-        .then(fetchedParent => {
-          VGPost.find({ replyParent: fetchedParent._id })
-            .then(posts => {
-              posts.unshift(fetchedParent);
-              res.send(posts);
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'mp':
-      MPPost.findOne({ postId: topicId, isTopic: true })
-        .then(fetchedParent => {
-          MPPost.find({ replyParent: fetchedParent._id })
-            .then(posts => {
-              posts.unshift(fetchedParent);
-              res.send(posts);
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
-      break;
-    case 'tb':
-      TBPost.findOne({ postId: topicId, isTopic: true })
-        .then(fetchedParent => {
-          TBPost.find({ replyParent: fetchedParent._id })
-            .then(posts => {
-              posts.unshift(fetchedParent);
-              res.send(posts);
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => res.status(500).send('An error occurred.'));
-      break;
-    default:
-      throw new Error('Topic does not exist.');
+  try {
+    const posts = await model.find({ replyParent: parent._id });
+    posts.unshift(parent);
+    res.send(posts);
+  } catch (e) {
+    throw new Error('Could not retreive replies.');
   };
 });
 
 // ====== Create reply to topic
 router.post('/:category/topic/:postId', async (req, res) => {
-  const category = req.params.category;
-  const topicId = req.params.postId;
+  const { category, postId: topicId } = req.params;
+  const model = getModel(category);
+  const parent = await getParent(model, topicId);
   const sequence = `${category}PostId`;
   const postId = await getNextPostId(sequence);
   const timestamp = new Date().toISOString();
-  let fetchedParent;
 
   const newReply = {
     postId, 
-    postContent: req.body.postContent, 
     timestamp, 
-    author: req.body.postAuthor
+    author: req.body.postAuthor, 
+    postContent: req.body.postContent, 
+    replyParent: parent._id
   };
 
-  switch (category) {
-    case 'st':
-      fetchedParent = await STPost.findOneAndUpdate(
-        { postId: topicId, isTopic: true }, 
-        { $inc: {topicChildren: 1}, $set: { topicLatest: timestamp } }, 
-        { new: true }
-      );
-      newReply.replyParent = fetchedParent._id;
-      
-      STPost.create(newReply)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-      
-      break;
-    case 'vg':
-      fetchedParent = await VGPost.findOneAndUpdate(
-        { postId: topicId, isTopic: true }, 
-        { $inc: {topicChildren: 1}, $set: { topicLatest: timestamp } }, 
-        { new: true }
-      );
-      newReply.replyParent = fetchedParent._id;
-
-      VGPost.create(newReply)
-        .then(res.send('Post succeeded!'))
-        .catch(err => console.log(err));
-
-      break;
-    case 'mp':
-      fetchedParent = await MPPost.findOneAndUpdate(
-        { postId: topicId, isTopic: true }, 
-        { $inc: {topicChildren: 1}, $set: { topicLatest: timestamp } }, 
-        { new: true }
-      );
-      newReply.replyParent = fetchedParent._id;
-
-      MPPost.create(newReply)
-        .then(res.json('Post succeeded!'))
-        .catch(err => console.log(err));
-
-      break;
-    case 'tb':
-      fetchedParent = await TBPost.findOneAndUpdate(
-        { postId: topicId, isTopic: true }, 
-        { $inc: {topicChildren: 1}, $set: { topicLatest: timestamp } }, 
-        { new: true }
-      );
-      newReply.replyParent = fetchedParent._id;
-
-      TBPost.create(newReply)
-        .then(res.json('Post succeeded!'))
-        .catch(err => console.log(err));
-
-      break;
-    default:
-      throw new Error('Topic does not exist.');
+  try {
+    await model.create(newReply);
+    await model.findOneAndUpdate(
+      { postId: topicId, isTopic: true }, 
+      { $inc: {topicChildren: 1}, $set: { topicLatest: timestamp } }
+    );
+    res.send('Post succeeded!');
+  } catch (e) {
+    throw new Error('Could not post reply.')
   };
 });
 
 // ====== Delete reply
 router.delete('/:category/topic/:postId/:replyId', async (req, res) => {
   const { category, postId, replyId } = req.params;
+  const model = getModel(category);
 
-  const replyToDelete = { postId: replyId };
-
-  switch (category) {
-    case 'st':
-      await STPost.findOneAndUpdate(
-        { postId, isTopic: true }, 
-        { $inc: {topicChildren: -1} }, 
-        { new: true }
-      );
-      
-      await STPost.findOneAndDelete(replyToDelete)
-        .then(res.send(`Successfully deleted ${category}#${replyId}`))
-        .catch(err => console.log(err));
-      break;
-    case 'vg':
-      await VGPost.findOneAndUpdate(
-        { postId, isTopic: true }, 
-        { $inc: {topicChildren: -1} }, 
-        { new: true }
-      );
-      
-      await VGPost.findOneAndDelete(replyToDelete)
-        .then(res.send(`Successfully deleted ${category}#${replyId}`))
-        .catch(err => console.log(err));
-      break;
-    case 'mp':
-      await MPPost.findOneAndUpdate(
-        { postId, isTopic: true }, 
-        { $inc: {topicChildren: -1} }, 
-        { new: true }
-      );
-      
-      await MPPost.findOneAndDelete(replyToDelete)
-        .then(res.send(`Successfully deleted ${category}#${replyId}`))
-        .catch(err => console.log(err));
-      break;
-    case 'tb':
-      await TBPost.findOneAndUpdate(
-        { postId, isTopic: true }, 
-        { $inc: {topicChildren: -1} }, 
-        { new: true }
-      );
-
-      await TBPost.findOneAndDelete(replyToDelete)
-        .then(res.send(`Successfully deleted ${category}#${replyId}`))
-        .catch(err => console.log(err));
-      break;
-    default:
-      throw new Error('Reply does not exist,');
+  try {
+    await model.findOneAndDelete(
+      { postId: replyId }
+    );
+    await model.findOneAndUpdate(
+      { postId, isTopic: true }, 
+      { $inc: {topicChildren: -1} }
+    );
+    res.send('Deletion succeeded!');
+  } catch (e) {
+    throw new Error('Could not delete reply.');
   };
 });
+
+// res.status(500).send('An error occurred.')
 
 module.exports = router;

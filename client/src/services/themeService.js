@@ -51,9 +51,9 @@ const themes = [
     themeLong: 'one-point-oh', 
     themeData: {
       ...baseThemeDataObject, 
-      'font-stack': '"Courier", monospace', 
+      'font-stack': '"Times New Roman", serif', 
       'primary-300': 'hsl(54, 100%, 73%)', 
-      'primary-300': 'hsl(54, 100%, 62%)', 
+      'primary-500': 'hsl(54, 100%, 62%)', 
       'primary-700': 'hsl(54, 100%, 67%)', 
       'background-100': 'hsl(0, 0%, 13%)',  
       'background-200': 'hsl(0, 0%, 13%)',  

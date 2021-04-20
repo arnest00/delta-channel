@@ -7,7 +7,6 @@ const express = require('express'),
 const apiRoutes = require('./routes/api');
 
 const app = express();
-app.disable('x-powered-by');
 
 // ====== Helmet middleware
 app.use(helmet());

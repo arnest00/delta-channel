@@ -31,14 +31,11 @@
       padding: 0 0.33em;
 
       button {
-        border: none;
         flex: 1;
-        color: var(--neutral-100);
-        background-color: var(--primary-300);
       }
 
       button:disabled {
-        color: var(--neutral-500);
+        color: var(--background-300);
         background-color: var(--primary-700);
       }
     }

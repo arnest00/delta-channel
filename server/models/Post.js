@@ -5,11 +5,6 @@ const PostSchema = new mongoose.Schema({
     type: Number, 
     required: true
   }, 
-  postContent: {
-    type: String, 
-    trim: true, 
-    required: true
-  }, 
   timestamp: {
     type: Date, 
     required: true
@@ -17,6 +12,11 @@ const PostSchema = new mongoose.Schema({
   author: {
     type: String, 
     default: 'Anonymous', 
+    required: true
+  }, 
+  postContent: {
+    type: String, 
+    trim: true, 
     required: true
   }, 
   isTopic: Boolean, 

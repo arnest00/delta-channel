@@ -13,6 +13,10 @@ body {
   width: 100%;
 }
 
+h2 {
+  margin: 0.42em 0 0.63em 0;
+}
+
 a {
   text-decoration: none;
   color: var(--primary-500);
@@ -23,8 +27,13 @@ a:hover {
   color: var(--primary-300);
 }
 
-h2 {
-  margin: 0.42em 0 0.63em 0;
+button {
+  border: none;
+  border-radius: 0.33em;
+  margin: 0.33em 0;
+  padding: 0.63em 0.42em;
+  color: var(--background-100);
+  background-color: var(--primary-500);
 }
 
 select {

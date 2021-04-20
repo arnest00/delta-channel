@@ -18,14 +18,13 @@ import './stylesheets/App.scss';
 function App() {
   const categories = getCategories();
   const themes = getThemes();
+  const { pathname } = useLocation();
+  let history = useHistory();
 
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
   const [ currentTheme, setCurrentTheme ] = useState('lite');
-
-  const { pathname } = useLocation();
-  let history = useHistory();
 
   useEffect(() => {
     const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
