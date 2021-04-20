@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
+import fetch from 'node-fetch';
 import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
 import PostSuccess from './components/PostSuccess';
+import PostFailure from './components/PostFailure';
 import Replies from './components/Replies';
 import Topics from './components/Topics';
 import About from './components/About';
@@ -20,38 +22,37 @@ function App() {
   const themes = getThemes();
   const { pathname } = useLocation();
   let history = useHistory();
-
+  
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
   const [ currentTheme, setCurrentTheme ] = useState('lite');
-
+  
   useEffect(() => {
     const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
-    let isActive = true;
-
-    const fetchContent = () => {
+    const fetchContent = async () => {
       setIsLoading(true);
 
-      fetch(`/api${currentPath}`)
-        .then(response => {
-          if (!response.ok) history.replace('/not-found');
-          if (isActive) {
-            response.json()
-              .then(data => {
-                setContent(data);
-                setIsLoading(false);
-                window.scrollTo(0, 0);
-              })
-              .catch(err => console.log(err));
-          };
-        })
-        .catch(err => console.log(err));
+      try {
+        const response = await fetch(`/api${currentPath}`);
+        const data = await response.json();
+
+        if (isActive) {
+          setContent(data);
+          setIsLoading(false);
+          window.scrollTo(0, 0);
+        };
+      } catch (e) {
+        history.replace('/not-found');
+      };
     };
+    let isActive = true;
 
     setContent([]);
     setCurrentPath(pathname);
-    if (!staticRoutes.includes(currentPath) && !currentPath.includes('success')) fetchContent();
+
+    if (staticRoutes.includes(currentPath)) return;
+    if (!currentPath.includes('success') && !currentPath.includes('failure')) fetchContent();
 
     return function cleanup() {
       isActive = false;
@@ -106,8 +107,10 @@ function App() {
       <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>
         <Switch>
+          <Route path='/:categorySlug/topic/:postId/failure' component={PostFailure} />
           <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />
           {formatReplyViewRoutes(categories)}
+          <Route path='/:categorySlug/failure' component={PostFailure} />
           <Route path='/:categorySlug/success' component={PostSuccess} />
           {formatTopicViewRoutes(categories)}
           <Route path='/about' component={About} />

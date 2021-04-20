@@ -26,24 +26,23 @@ const PostForm = ({ formRoute, onClick, formIsActive }) => {
     setFormContent({ ...formContent, postContent });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (formContent.postContent.length < 15) return setError('Posts must be at least 15 characters long.');
     if (formContent.postContent.length > 750) return setError('Posts must be at most 750 characters long.');
     if (!formContent.postAuthor.length) setFormContent({ ...formContent, postAuthor: 'Anonymous' });
 
-    fetch(`/api/${formRoute}`, {
-      method: 'POST', 
-      body: JSON.stringify(formContent), 
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => {
-        if (res.ok) {
-          onClick();
-          history.push(`/${formRoute}/success`);
-        };
-      })
-      .catch(err => console.log(err));
+    try {
+      await fetch(`/api/${formRoute}`, {
+        method: 'POST', 
+        body: JSON.stringify(formContent), 
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      history.push(`/${formRoute}/success`);
+    } catch (e) {
+      history.push(`/${formRoute}/failure`);
+    };
   };
 
   return ( 
