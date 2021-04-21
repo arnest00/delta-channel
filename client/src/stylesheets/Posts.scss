@@ -13,30 +13,24 @@
 
   .post-card {
     margin-bottom: 0.42em;
-    background-color: var(--background-300);
+    background-color: var(--background-card);
     
     .post-header {
       padding: 0.42em 0.63em;
       display: flex;
       justify-content: space-between;
-  
+      color: var(--font-body-subtitle);
+      
       .post-number {
-        margin: 0 1em 0 0;
+        margin: 0;
+        font-weight: normal;
         font-size: 1em;
-      }
-  
-      .post-info-container {
-        display: flex;
-        flex-direction: column;
-        color: var(--font-800);
-        font-size: 0.81em;
-        text-align: right;
       }
     }
   
     .post-content-container {
-      padding: 0.63em 0.81em;
-      background-color: var(--background-200);
+      padding: 0.81em 1em;
+      background-color: var(--background-content);
       
       .post-content {
         margin: 0;
@@ -45,12 +39,13 @@
       }
     }
   
-    .post-link-container {
+    .post-footer {
       padding: 0.42em 0.63em;
-      text-align: right;
-  
-      a {
-        font-size: 0.81em;
+      display: flex;
+      justify-content: space-between;
+
+      time {
+        color: var(--font-body-subtitle);
       }
     }
   }

@@ -14,13 +14,13 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
       <section key={r.postId} className='post-card'>
         <header className='post-header'>
           <h3 className='post-number'>#{r.postId}</h3>
-          <div className='post-info-container'>
-            <span>Author: {r.author}</span>
-            <time dateTime={r.timestamp}>Posted: {formatDate(r.timestamp)}</time>
-          </div>
+          <span>Author: {r.author}</span>
         </header>
         <div className='post-content-container'>
           <pre className='post-content'>{r.postContent}</pre>
+        </div>
+        <div className="post-footer">
+          <time dateTime={r.timestamp}>Posted: {formatDate(r.timestamp)}</time>
         </div>
       </section>
     ));

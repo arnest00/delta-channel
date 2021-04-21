@@ -8,8 +8,8 @@ body {
   font-family: var(--font-stack);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--font-900);
-  background-color: var(--background-100);
+  color: var(--font-body);
+  background-color: var(--background-body);
   width: 100%;
 }
 
@@ -19,12 +19,12 @@ h2 {
 
 a {
   text-decoration: none;
-  color: var(--primary-500);
+  color: var(--primary-anchor);
 }
 
 a:hover {
   text-decoration: underline;
-  color: var(--primary-300);
+  color: var(--primary-anchor-hover);
 }
 
 button {
@@ -32,8 +32,12 @@ button {
   border-radius: 0.33em;
   margin: 0.33em 0;
   padding: 0.63em 0.42em;
-  color: var(--background-100);
-  background-color: var(--primary-500);
+  color: var(--font-button);
+  background-color: var(--primary-button);
+}
+
+button:active {
+  transform: translateY(1px);
 }
 
 select {

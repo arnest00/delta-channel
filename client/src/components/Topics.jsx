@@ -17,15 +17,13 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
       <section key={t.postId} className='post-card'>
         <header className='post-header'>
           <h3 className='post-number'>#{t.postId}</h3>
-          <div className='post-info-container'>
-            <span>Author: {t.author}</span>
-            <span>Last Reply: {formatDate(t.topicLatest)}</span>
-          </div>
+          <span>Author: {t.author}</span>
         </header>
         <div className='post-content-container'>
           <pre className='post-content'>{t.postContent}</pre>
         </div>
-        <div className="post-link-container">
+        <div className="post-footer">
+          <time>Last Reply: {formatDate(t.topicLatest)}</time>
           <Link to={`/${categorySlug}/topic/${t.postId}`}>View Topic ({t.topicChildren} replies)</Link>
         </div>
       </section>
