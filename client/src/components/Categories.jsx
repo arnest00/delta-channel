@@ -5,6 +5,17 @@ const Categories = ({ categories }) => {
   const formatCategories = categories => {
     return categories.map((c, idx) => (
       <section key={idx} className='category'>
+        <div className="banner">
+          <Link to={`/${c.categorySlug}`}>
+            <img 
+              height='150'
+              width='380' 
+              src={c.categoryBanner} 
+              title={c.categoryName} 
+              alt={c.categoryName} 
+            />
+          </Link>
+        </div>
         <h3>
           <Link to={`/${c.categorySlug}`}>{c.categoryName}</Link>
         </h3>

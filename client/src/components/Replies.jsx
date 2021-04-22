@@ -30,27 +30,45 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
     setFormIsActive(!formIsActive);
   };
 
-  return (  
-    <article id='posts' className={formIsActive ? 'expanded' : ''}>
-      <nav id='posts-navigation'>
-        <Link to={`/`}>back to categories</Link>
-        <Link to={`/${categorySlug}`}>back to topics</Link>
-      </nav>
-      <h2>replies to {categorySlug}#{postId}</h2>
+  return ( 
+    <div id='main'>
+      <article id='posts' className={formIsActive ? 'expanded' : ''}>
+        <nav id='posts-navigation' className='mobile'>
+          <Link to={`/`}>back to categories</Link>
+          <Link to={`/${categorySlug}`}>back to topics</Link>
+        </nav>
 
-      <div className="button-container">
-        {!formIsActive && <Button onClick={handleCancel} content='Reply to Topic' className='button new-button'/>}
-      </div>
+        <h2>replies to {categorySlug}#{postId}</h2>
 
-      {isLoading && <NowLoading />}
-      {formatReplies(replies)}
+        <div className="button-container mobile">
+          {!formIsActive && <Button onClick={handleCancel} content='Reply to Topic' className='button new-button'/>}
+        </div>
 
-      {formIsActive && <PostForm 
-        formRoute={`${categorySlug}/topic/${postId}`}
-        onClick={handleCancel}
-        formIsActive={formIsActive}
-      />}
-    </article>
+        {isLoading && <NowLoading />}
+        {formatReplies(replies)}
+
+        {formIsActive && <PostForm 
+          formRoute={`${categorySlug}/topic/${postId}`}
+          onClick={handleCancel}
+          formIsActive={formIsActive}
+        />}
+      </article>
+
+      <section id='sidebar'>
+        <nav id='posts-navigation'>
+          <Link to={`/`}>back to categories</Link>
+          <Link to={`/${categorySlug}`}>back to topics</Link>
+        </nav>
+        <div className="button-container">
+          {!formIsActive && <Button onClick={handleCancel} content='Reply to Topic' className='button new-button'/>}
+        </div>
+        {formIsActive && <PostForm 
+          formRoute={`${categorySlug}/topic/${postId}`}
+          onClick={handleCancel}
+          formIsActive={formIsActive}
+        />}
+      </section>
+    </div>
   );
 };
  

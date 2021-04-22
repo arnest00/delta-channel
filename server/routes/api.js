@@ -91,19 +91,19 @@ router.post('/:category', async (req, res) => {
 });
 
 // ====== Delete topic and replies
-router.delete('/:category/topic/:postId', async (req, res) => {
-  const { category, postId } = req.params;
-  const model = getModel(category);
-  const parent = await getParent(model, postId);
+// router.delete('/:category/topic/:postId', async (req, res) => {
+//   const { category, postId } = req.params;
+//   const model = getModel(category);
+//   const parent = await getParent(model, postId);
 
-  try {
-    await model.deleteMany({ replyParent: parent._id });
-    await model.deleteOne({ postId: postId });
-    res.send('Deletion succeeded!')
-  } catch (e) {
-    throw new Error('Could not delete topic and its replies.');
-  };
-});
+//   try {
+//     await model.deleteMany({ replyParent: parent._id });
+//     await model.deleteOne({ postId: postId });
+//     res.send('Deletion succeeded!')
+//   } catch (e) {
+//     throw new Error('Could not delete topic and its replies.');
+//   };
+// });
 
 // ====== Index replies to topic
 router.get('/:category/topic/:postId', async (req, res) => {
@@ -150,23 +150,23 @@ router.post('/:category/topic/:postId', async (req, res) => {
 });
 
 // ====== Delete reply
-router.delete('/:category/topic/:postId/:replyId', async (req, res) => {
-  const { category, postId, replyId } = req.params;
-  const model = getModel(category);
+// router.delete('/:category/topic/:postId/:replyId', async (req, res) => {
+//   const { category, postId, replyId } = req.params;
+//   const model = getModel(category);
 
-  try {
-    await model.findOneAndDelete(
-      { postId: replyId }
-    );
-    await model.findOneAndUpdate(
-      { postId, isTopic: true }, 
-      { $inc: {topicChildren: -1} }
-    );
-    res.send('Deletion succeeded!');
-  } catch (e) {
-    throw new Error('Could not delete reply.');
-  };
-});
+//   try {
+//     await model.findOneAndDelete(
+//       { postId: replyId }
+//     );
+//     await model.findOneAndUpdate(
+//       { postId, isTopic: true }, 
+//       { $inc: {topicChildren: -1} }
+//     );
+//     res.send('Deletion succeeded!');
+//   } catch (e) {
+//     throw new Error('Could not delete reply.');
+//   };
+// });
 
 // res.status(500).send('An error occurred.')
 

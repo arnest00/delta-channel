@@ -13,6 +13,10 @@
     border-top: 1px solid var(--background-border);
     display: flex;
 
+    textarea {
+      resize: vertical;
+    }
+
     .form-group {
       flex: 1;
       display: flex;
@@ -37,6 +41,33 @@
       button:disabled {
         color: var(--font-button-disabled);
         background-color: var(--primary-button-disabled);
+        cursor: default;
+      }
+    }
+  }
+}
+
+// ====== Desktop
+@media (min-width: 1024px) {
+  #form-container {
+    justify-content: flex-start;
+
+    .form {
+      position: initial;
+      padding: 0.42em;
+      width: 60%;
+      background: var(--background-card);
+      border: 1px solid var(--background-border);
+      flex-direction: column;
+
+      .button-group {
+        flex-direction: row;
+        justify-content: flex-end;
+
+        button {
+          flex: none;
+          margin-left: 1em;
+        }
       }
     }
   }

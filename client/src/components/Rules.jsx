@@ -1,6 +1,6 @@
 const Rules = () => {
   return ( 
-    <article>
+    <article className='info'>
       <h2>rules</h2>
       <section>
         <ol>

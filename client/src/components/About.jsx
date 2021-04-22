@@ -1,6 +1,6 @@
 const About = () => {
   return ( 
-    <article>
+    <article className='info'>
       <h2>about</h2>
       <section>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis nobis eligendi porro magnam cumque, vel, aliquam ducimus incidunt asperiores, voluptatem delectus velit officia consequatur suscipit maxime eaque consequuntur culpa consectetur temporibus. Quasi consequuntur harum illo, minima suscipit, officia veritatis dolores fugiat vel, dolore optio eveniet esse eius incidunt corporis atque? Non ad officiis natus saepe! Repellendus magnam mollitia suscipit impedit.

@@ -15,6 +15,15 @@ const Header = ({ path, categories, onChange }) => {
       if (path === categories[i].categorySlug) {
         return (
           <React.Fragment>
+            <div className="banner">
+              {categories[i].categoryBanner && <img 
+                height='150'
+                width='380' 
+                src={categories[i].categoryBanner} 
+                title={categories[i].categoryName} 
+                alt={categories[i].categoryName} 
+              />}
+            </div>
             <h1>{categories[i].categoryName}</h1>
             {categories[i].categoryDescription && <span>{categories[i].categoryDescription}</span>}
           </React.Fragment>

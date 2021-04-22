@@ -19,7 +19,7 @@ const PostFailure = () => {
   });
 
   return ( 
-    <article>
+    <article className='info'>
       <h2>Post failed!</h2>
       <p>Something went wrong. You will be redirected to the previous page in {timeRemaining} seconds...</p>
     </article>

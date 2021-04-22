@@ -1,7 +1,7 @@
 @import 'Header';
 @import 'Categories';
-@import 'PostForm';
 @import 'Posts';
+@import 'PostForm';
 @import 'Footer';
 
 body {
@@ -28,16 +28,23 @@ a:hover {
 }
 
 button {
-  border: none;
-  border-radius: 0.33em;
-  margin: 0.33em 0;
-  padding: 0.63em 0.42em;
+  margin: 0.24em 0;
+  border: solid 1px transparent;
+  border-radius: 0.24em;
+  padding: 0.42em 0.63em;
   color: var(--font-button);
   background-color: var(--primary-button);
+  cursor: pointer;
 }
 
 button:active {
   transform: translateY(1px);
+}
+
+button:hover {
+  color: var(--primary-button);
+  border-color: var(--primary-button);
+  background-color: transparent;
 }
 
 select {
@@ -52,5 +59,25 @@ select {
   main {
     flex: 1;
     margin-bottom: 0.42em;
+
+    .info {
+      margin: 0 0.33em
+    }
+  }
+}
+
+// ====== Tablet
+@media (min-width: 480px) {
+
+}
+
+// ====== Desktop
+@media (min-width: 1024px) {
+  #App {
+    main {
+      .info {
+        margin: 0 1em;
+      }
+    }
   }
 }

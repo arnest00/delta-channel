@@ -22,7 +22,16 @@
   
   #header-content{
     text-align: center;
-    margin-bottom: 0.42em;
+    margin: 0.42em 0;
+
+    .banner {
+      img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid var(--background-border);
+        filter: var(--image-filter);
+      }
+    }
 
     h1 {
       margin: 0.63em 0;
@@ -30,6 +39,24 @@
   
     span {
       color: var(--font-body-subtitle);
+    }
+  }
+}
+
+// ====== Tablet
+@media screen and (min-width: 480px) {
+  #Header {
+    #header-navigation {
+      flex-direction: row;
+      justify-content: space-between;
+
+      div:nth-of-type(1) {
+        margin-bottom: 0;
+      }
+  
+      div:nth-of-type(2) {
+        align-self: center;
+      }
     }
   }
 }

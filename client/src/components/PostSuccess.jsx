@@ -19,7 +19,7 @@ const PostSuccess = () => {
   });
 
   return ( 
-    <article>
+    <article className='info'>
       <h2>Post succeeded!</h2>
       <p>You will be redirected to the previous page in {timeRemaining} seconds...</p>
     </article>
