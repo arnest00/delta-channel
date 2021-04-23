@@ -1,15 +1,15 @@
-#Footer {
+.Footer {
   padding: 1em 0;
   border-top: 1px solid var(--background-border);
 
-  #footer-navigation {
+  .footer-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0 0.42em 0.42em 0.42em;
   }
   
-  #footer-disclaimer {
+  .footer-disclaimer {
     font-size: 0.81em;
     text-align: center;
   }

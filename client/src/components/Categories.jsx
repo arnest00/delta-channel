@@ -25,7 +25,7 @@ const Categories = ({ categories }) => {
   };
   
   return ( 
-    <article id='Categories'>
+    <article className='Categories container'>
       <h2>categories</h2>
       {formatCategories(categories)}
     </article>

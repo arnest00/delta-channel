@@ -1,10 +1,5 @@
-.expanded {
-  padding-bottom: 6.3em;
-}
 
-#posts {
-  margin: 0 0.33em;
-
+.content {
   .button-container {
     display: flex;
     justify-content: center;
@@ -49,25 +44,29 @@
         color: var(--font-body-subtitle);
       }
     }
-  }
 
-  #posts-navigation {
+  }
+  
+  .posts-navigation {
     margin: 0.42em 0;
 
     a {
       margin-right: 0.81em;
     }
   }
-
 }
 
-#sidebar {
+.expanded {
+  padding-bottom: 6.3em;
+}
+
+.sidebar {
   display: none;
 }
 
 // ====== Tablet
 @media (min-width: 480px) {
-  #posts {
+  .content {
     .post-card {
       max-width: 75vw;
     }
@@ -76,52 +75,45 @@
 
 // ====== Desktop
 @media (min-width: 1024px) {
-  #main {
+  .posts-container {
     display: grid;
     grid-template-areas: 
-      'posts sidebar';
+      'content sidebar';
     gap: 1em;
     grid-template-columns: 2fr 2fr;
     
-    #sidebar {
+    .content {
+      .mobile {
+        display: none;
+      }
+  
+      .post-card {
+        border: 1px solid var(--background-border);
+      }
+    }
+
+    .expanded {
+      padding-bottom: 0;
+    }
+
+    .sidebar {
       display: block;
       position: -webkit-sticky;
       position: sticky;
       top: 0;
       height: fit-content;
-      margin: 0 1em 0 0;
 
       .button-container {
         margin-top: 1.63em;
       }
 
-      #posts-navigation {
+      .posts-navigation {
         margin: 0.42em 0;
 
         a {
           margin-right: 0.81em;
         }
       }
-    }
-  }
-
-  .expanded {
-    padding-bottom: 0;
-  }
-
-  .mobile {
-    display: none;
-  }
-  
-  #posts {
-    margin: 0 0 0 1em;
-    
-    .mobile {
-      display: none;
-    }
-
-    .post-card {
-      border: 1px solid var(--background-border);
     }
   }
 }

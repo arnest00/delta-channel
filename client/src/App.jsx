@@ -4,12 +4,10 @@ import fetch from 'node-fetch';
 import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
-import PostSuccess from './components/PostSuccess';
-import PostFailure from './components/PostFailure';
+import PostFeedback from './components/PostFeedback';
 import Replies from './components/Replies';
 import Topics from './components/Topics';
 import About from './components/About';
-import Rules from './components/Rules';
 import Categories from './components/Categories';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
@@ -26,7 +24,11 @@ function App() {
   const [ content, setContent ] = useState([]);
   const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
-  const [ currentTheme, setCurrentTheme ] = useState('lite');
+  const [ currentTheme, setCurrentTheme ] = useState(
+    localStorage.getItem('userTheme') ? 
+      localStorage.getItem('userTheme') : window.matchMedia('(prefers-color-scheme: dark)') ? 
+      'dark' : 'lite'
+  );
   
   useEffect(() => {
     const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
@@ -96,25 +98,36 @@ function App() {
     const selectedTheme = e.target.value;
 
     if (selectedTheme === currentTheme) return;
+
+    localStorage.setItem('userTheme', selectedTheme);
     setCurrentTheme(selectedTheme);
   };
 
   return (
-    <div id='App'>
-      <div id='top'></div>
+    <div className='App'>
+      <div id="top"></div>
       <Theme themes={themes} currentTheme={currentTheme} />
       <Title path={pathname.slice(1,3)} categories={categories} />
       <Header path={pathname.slice(1,3)} categories={categories} onChange={handleCategorySelect} />
       <main>
         <Switch>
-          <Route path='/:categorySlug/topic/:postId/failure' component={PostFailure} />
-          <Route path='/:categorySlug/topic/:postId/success' component={PostSuccess} />
+          <Route path='/:categorySlug/topic/:postId/failure'>
+            <PostFeedback success={false} />
+          </Route>
+          <Route path='/:categorySlug/topic/:postId/success'>
+            <PostFeedback success={true} />
+          </Route>
           {formatReplyViewRoutes(categories)}
-          <Route path='/:categorySlug/failure' component={PostFailure} />
-          <Route path='/:categorySlug/success' component={PostSuccess} />
+
+          <Route path='/:categorySlug/failure'>
+            <PostFeedback success={false} />
+          </Route>
+          <Route path='/:categorySlug/success'>
+            <PostFeedback success={true} />
+          </Route>
           {formatTopicViewRoutes(categories)}
+          
           <Route path='/about' component={About} />
-          <Route path='/rules' component={Rules} />
           <Route path='/not-found' component={NotFound} />
           <Route exact path='/'>
             <Categories categories={categories} />
@@ -123,7 +136,7 @@ function App() {
         </Switch>
       </main>
       <Footer themes={themes} onChange={handleThemeSelect} />
-      <div id='bottom'></div>
+      <div id="bottom"></div>
     </div>
   );
 };

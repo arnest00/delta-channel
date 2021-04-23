@@ -37,42 +37,43 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
   };
   
   return ( 
-    <div id='main'>
-      <article id='posts' className={formIsActive ? 'expanded' : ''}>
-        <nav id='posts-navigation' className='mobile'>
-          <Link to='/'>back to categories</Link>
-        </nav>
-        
-        <h2>topics in {categorySlug}</h2>
+    <article className='Posts container'>
+      <div className='posts-container'>
+        <section className={`content${formIsActive ? ' expanded' : ''}`}>
+          <nav className='posts-navigation mobile'>
+            <Link to='/'>back to categories</Link>
+          </nav>
+          
+          <h2>topics in {categorySlug}</h2>
 
-        <div className="button-container mobile">
-          {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
-        </div>
+          <div className="button-container mobile">
+            {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
+          </div>
+          {formIsActive && <PostForm 
+            formRoute={categorySlug}
+            onClick={handleCancel}
+            formIsActive={formIsActive}
+          />}
 
-        {isLoading && <NowLoading />}
-        {formatTopics(topics)}
+          {isLoading && <NowLoading />}
+          {formatTopics(topics)}
+        </section>
 
-        {formIsActive && <PostForm 
-          formRoute={categorySlug}
-          onClick={handleCancel}
-          formIsActive={formIsActive}
-        />}
-      </article>
-
-      <section id='sidebar'>
-        <nav id='posts-navigation'>
-          <Link to='/'>back to categories</Link>
-        </nav>
-        <div className="button-container">
-          {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
-        </div>
-        {formIsActive && <PostForm 
-          formRoute={categorySlug}
-          onClick={handleCancel}
-          formIsActive={formIsActive}
-        />}
-      </section>
-    </div>
+        <section className='sidebar'>
+          <nav className='posts-navigation'>
+            <Link to='/'>back to categories</Link>
+          </nav>
+          <div className="button-container">
+            {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
+          </div>
+          {formIsActive && <PostForm 
+            formRoute={categorySlug}
+            onClick={handleCancel}
+            formIsActive={formIsActive}
+          />}
+        </section>
+      </div>
+    </article>
   );
 }
  

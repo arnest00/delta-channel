@@ -35,12 +35,12 @@ const Header = ({ path, categories, onChange }) => {
   };
 
   return ( 
-    <header id='Header'>
-      <nav id='header-navigation'>
+    <header className='Header'>
+      <nav className='header-navigation'>
         <div>
           <label>
             Category:
-            <select id='category-selector' onChange={onChange} defaultValue={''}>
+            <select className='category-selector' onChange={onChange} defaultValue=''>
               <option value='' disabled>--Select category--</option>
               {formatCategoryOptions(categories)}
             </select>
@@ -50,10 +50,9 @@ const Header = ({ path, categories, onChange }) => {
           <a href="#bottom">▼</a>
           <Link to='/'>home</Link>
           <Link to='/about'>about</Link>
-          <Link to='/rules'>rules</Link>
         </div>
       </nav>
-      <div id='header-content'>
+      <div className='header-content'>
         {formatHeader(path)}
       </div>
     </header>

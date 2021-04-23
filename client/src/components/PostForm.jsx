@@ -46,7 +46,7 @@ const PostForm = ({ formRoute, onClick, formIsActive }) => {
   };
 
   return ( 
-    <div id='form-container' className='mobile'>
+    <div className='form-container mobile'>
 
       {formIsActive && <form onSubmit={handleSubmit} className='form'>
         <div className="form-group">

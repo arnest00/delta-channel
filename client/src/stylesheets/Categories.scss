@@ -1,6 +1,4 @@
-#Categories {
-  margin: 0 0.33em;
-
+.Categories {
   .category {
     margin: 1em 0 1.63em 0;
     text-align: center;
@@ -22,8 +20,7 @@
 
 // ====== Desktop
 @media (min-width: 1024px) {
-  #Categories {
-    margin: 0 1em;
+  .Categories {
     max-width: 75vw;
   }
 }

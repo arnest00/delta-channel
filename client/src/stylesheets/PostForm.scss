@@ -1,4 +1,4 @@
-#form-container {
+.form-container {
   display: flex;
   justify-content: center;
   margin-bottom: 0.42em;
@@ -49,7 +49,7 @@
 
 // ====== Desktop
 @media (min-width: 1024px) {
-  #form-container {
+  .form-container {
     justify-content: flex-start;
 
     .form {
@@ -62,11 +62,10 @@
 
       .button-group {
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-between;
 
         button {
           flex: none;
-          margin-left: 1em;
         }
       }
     }
