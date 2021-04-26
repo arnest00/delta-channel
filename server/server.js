@@ -1,7 +1,8 @@
 require('dotenv').config();
 
-const express = require('express'),
-      mongoose = require('mongoose'),
+const express = require('express'), 
+      mongoose = require('mongoose'), 
+      cors = require('cors'), 
       helmet = require('helmet'), 
       path = require('path');
 
@@ -9,7 +10,8 @@ const apiRoutes = require('./routes/api');
 
 const app = express();
 
-// ====== Helmet middleware
+// ====== Middleware
+app.use(cors());
 app.use(helmet());
 
 // ====== Set up .env variables
