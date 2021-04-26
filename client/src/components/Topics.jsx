@@ -28,7 +28,6 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
         </div>
       </section>
     ));
-
     return formattedTopics;
   };
 

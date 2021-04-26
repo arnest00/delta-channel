@@ -72,7 +72,8 @@ const PostForm = ({ formRoute, onClick, formIsActive }) => {
                 onChange={handleTextareaChange}
               ></textarea>
             </label>
-            { error && <span>{error}</span>}
+            { error ? 
+              <span className='error'>{error}</span> : <span>Posts must be between 15 and 750 characters long.</span>}
           </div>
         </div>
 

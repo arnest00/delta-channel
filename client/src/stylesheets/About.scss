@@ -13,5 +13,13 @@
       'rules faqs';
     gap: 1em;
     grid-template-columns: 2fr 2fr;
+
+    .rules {
+      display: block;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      height: fit-content;
+    }
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 const PostFeedback = ({ success }) => {
   const [ timeRemaining, setTimeRemaining ] = useState(3);
@@ -21,7 +21,7 @@ const PostFeedback = ({ success }) => {
   return ( 
     <article className='container'>
       <h2>Post { success ? 'succeeded!' : 'failed!'}</h2>
-      <p>{!success && 'Something went wrong. '}You will be redirected to the previous page in {timeRemaining} seconds...</p>
+      <p>{!success && 'Something went wrong. '}You will be redirected <Link to={prevPage}>to the previous page</Link> in {timeRemaining} seconds...</p>
     </article>
   );
 };

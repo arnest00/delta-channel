@@ -17,6 +17,19 @@
       resize: vertical;
     }
 
+    input:focus, textarea:focus {
+      outline: solid 1px var(--secondary);
+    }
+
+    span {
+      font-size: 0.81em;
+      padding-top: 0.33em;
+    }
+
+    .error {
+      color: var(--accent-danger);
+    }
+
     .form-group {
       flex: 1;
       display: flex;
@@ -42,6 +55,16 @@
         color: var(--font-button-disabled);
         background-color: var(--primary-button-disabled);
         cursor: default;
+      }
+
+      .cancel-button {
+        background-color: var(--accent-danger);
+      }
+
+      .cancel-button:hover {
+        color: var(--accent-danger);
+        border-color: var(--accent-danger);
+        background-color: transparent;
       }
     }
   }

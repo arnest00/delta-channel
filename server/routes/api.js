@@ -1,7 +1,7 @@
 const express = require('express'), 
       router = express.Router();
 
-const { STPost, VGPost, MPPost, TBPost } = require('../models/Post');
+const { STPost, VGPost, MPPost, DTPost } = require('../models/Post');
 const Sequence = require('../models/Sequence');
 
 const getModel = category => {
@@ -12,8 +12,8 @@ const getModel = category => {
       return VGPost;
     case 'mp':
       return MPPost;
-    case 'tb':
-      return TBPost;
+    case 'dt':
+      return DTPost;
     default:
       throw new Error('Category does not exist.');
   };

@@ -28,11 +28,11 @@ const PostSchema = new mongoose.Schema({
 const STPost = mongoose.model('STPost', PostSchema);
 const VGPost = mongoose.model('VGPost', PostSchema);
 const MPPost = mongoose.model('MPPost', PostSchema);
-const TBPost = mongoose.model('TBPost', PostSchema);
+const DTPost = mongoose.model('DTPost', PostSchema);
 
 module.exports = {
   STPost, 
   VGPost, 
   MPPost, 
-  TBPost
+  DTPost
 };
