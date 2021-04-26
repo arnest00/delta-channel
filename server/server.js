@@ -18,14 +18,6 @@ app.use(helmet());
 const DB = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;
 
-// ====== Production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
-  });
-};
-
 // ====== Connect to MongoDB
 mongoose.connect(DB, {
   useNewUrlParser: true,
