@@ -18,6 +18,9 @@ app.use(helmet());
 const DB = process.env.MONGO_URI;
 const PORT = process.env.PORT || 5000;
 
+// ====== Serve static files from client
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // ====== Connect to MongoDB
 mongoose.connect(DB, {
   useNewUrlParser: true,
@@ -32,10 +35,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ====== Routes
-app.get('/', (req, res) => {
-  res.send('This is the root route!');
-});
 app.use('/api', apiRoutes);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
