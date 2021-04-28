@@ -17,8 +17,17 @@
       resize: vertical;
     }
 
+    input, textarea {
+      caret-color: var(--secondary-selection);
+    }
+
     input:focus, textarea:focus {
       outline: solid 1px var(--secondary);
+    }
+
+    input::selection, textarea::selection {
+      color: var(--font-button);
+      background-color: var(--secondary-selection);
     }
 
     span {
