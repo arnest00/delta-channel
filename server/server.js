@@ -10,6 +10,8 @@ const apiRoutes = require('./routes/api');
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, '../client/build')));
+
 // ====== Middleware
 app.use(cors());
 app.use(helmet());
@@ -33,6 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // ====== Routes
 app.use('/api', apiRoutes);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
