@@ -13,11 +13,20 @@
     .post-header {
       padding: 0.42em 0.63em;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       color: var(--font-body-subtitle);
+
+      div {
+        display: flex;
+      }
+
+      span {
+        font-weight: bold;
+        margin: 0 0.42em 0 0;
+      }
       
       .post-number {
-        margin: 0;
+        margin: 0 0.42em 0 0;
         font-weight: bold;
         font-size: 1em;
         color: var(--secondary);
@@ -44,7 +53,6 @@
         color: var(--font-body-subtitle);
       }
     }
-
   }
   
   .posts-navigation {

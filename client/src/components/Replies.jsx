@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import formatDate from '../utils/formatDate';
 import Button from './common/Button';
 import PostForm from './PostForm';
 import NowLoading from './NowLoading';
+import Post from './Post';
 
 const Replies = ({ replies, categorySlug, isLoading }) => {
   const [ formIsActive, setFormIsActive ] = useState(false);
@@ -11,18 +11,12 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
 
   const formatReplies = replies => {
     return replies.map(r => (
-      <section key={r.postId} className='post-card'>
-        <header className='post-header'>
-          <h3 className='post-number'>#{r.postId}</h3>
-          <span>Author: {r.author}</span>
-        </header>
-        <div className='post-content-container'>
-          <pre className='post-content'>{r.postContent}</pre>
-        </div>
-        <div className="post-footer">
-          <time dateTime={r.timestamp}>Posted: {formatDate(r.timestamp)}</time>
-        </div>
-      </section>
+      <Post 
+        post={r} 
+        key={r.postId} 
+        categorySlug={categorySlug} 
+        isTopic={false} 
+      />
     ));
   };
 

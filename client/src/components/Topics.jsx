@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import formatDate from '../utils/formatDate';
 import Button from './common/Button';
 import PostForm from './PostForm';
 import NowLoading from './NowLoading';
+import Post from './Post';
 
 const Topics = ({ topics, categorySlug, isLoading }) => {
   const [ formIsActive, setFormIsActive ] = useState(false);
@@ -14,19 +14,12 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
     });
 
     const formattedTopics = sortedTopics.map(t => (
-      <section key={t.postId} className='post-card'>
-        <header className='post-header'>
-          <h3 className='post-number'>#{t.postId}</h3>
-          <span>Author: {t.author}</span>
-        </header>
-        <div className='post-content-container'>
-          <pre className='post-content'>{t.postContent}</pre>
-        </div>
-        <div className="post-footer">
-          <time>Last Reply: {formatDate(t.topicLatest)}</time>
-          <Link to={`/${categorySlug}/topic/${t.postId}`}>View Topic ({t.topicChildren} replies)</Link>
-        </div>
-      </section>
+      <Post 
+        post={t} 
+        key={t.postId} 
+        categorySlug={categorySlug} 
+        isTopic={true} 
+      />
     ));
     return formattedTopics;
   };

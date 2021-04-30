@@ -22,7 +22,6 @@ function App() {
   let history = useHistory();
   
   const [ content, setContent ] = useState([]);
-  const [ currentPath, setCurrentPath ] = useState('/');
   const [ isLoading, setIsLoading ] = useState(false);
   const [ currentTheme, setCurrentTheme ] = useState(
     localStorage.getItem('userTheme') ? 
@@ -33,10 +32,11 @@ function App() {
   useEffect(() => {
     const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
     const fetchContent = async () => {
+      setContent([]);
       setIsLoading(true);
 
       try {
-        const response = await fetch(`/api${currentPath}`);
+        const response = await fetch(`/api${pathname}`);
         const data = await response.json();
 
         if (isActive) {
@@ -50,16 +50,13 @@ function App() {
     };
     let isActive = true;
 
-    setContent([]);
-    setCurrentPath(pathname);
-
-    if (staticRoutes.includes(currentPath)) return;
-    if (!currentPath.includes('success') && !currentPath.includes('failure')) fetchContent();
+    if (staticRoutes.includes(pathname)) return;
+    if (!pathname.includes('success') && !pathname.includes('failure')) fetchContent();
 
     return function cleanup() {
       isActive = false;
     };
-  }, [ pathname, currentPath, history ]);
+  }, [ pathname, history ]);
 
   const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
@@ -90,7 +87,7 @@ function App() {
 
     e.target.value = '';
 
-    if (selectedCategory === currentPath.slice(1)) return;
+    if (selectedCategory === pathname.slice(1)) return;
     history.push(`/${selectedCategory}`);
   };
 
