@@ -41,6 +41,19 @@
         margin: 0;
         font-family: var(--font-stack);
         white-space: pre-wrap;
+
+        .post-readmore-link {
+          border: none;
+          margin: 0;
+          padding: 0;
+          color: var(--primary-anchor);
+          background-color: transparent;
+        }
+
+        .post-readmore-link:hover {
+          color: var(--primary-anchor-hover);
+          text-decoration: underline;
+        }
       }
     }
   

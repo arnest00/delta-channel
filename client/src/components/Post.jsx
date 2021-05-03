@@ -1,8 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Button from './common/Button';
 import formatDate from '../utils/formatDate';
 
 const Post = ({ post, categorySlug, isTopic }) => {
+  const [ readMore, setReadMore ] = useState(false);
+
+  const handleReadMore = () => {
+    setReadMore(true);
+  };
+
+  const formatContent = isTopic => { 
+    const postContentContainer = (
+      <div className='post-content-container'>
+        <pre className='post-content'>{post.postContent}</pre>
+      </div>
+    );
+    const truncatedPostContent = `${post.postContent.slice(0, 249)}... `;
+
+    if (!isTopic) 
+      return postContentContainer;
+
+    if (!readMore && (post.postContent.length > 275)) 
+      return (
+        <div className="post-content-container">
+          <pre className='post-content'>
+            {truncatedPostContent}
+            <Button 
+              onClick={handleReadMore} 
+              content='Read more'
+              className='post-readmore-link'
+            />
+          </pre>
+        </div>
+      );
+    else 
+      return postContentContainer;
+  };
+
   const formatFooter = isTopic => {
     if (isTopic) 
       return (
@@ -23,9 +58,7 @@ const Post = ({ post, categorySlug, isTopic }) => {
         </div>
         <time dateTime={post.timestamp}>{formatDate(post.timestamp)}</time>
       </header>
-      <div className='post-content-container'>
-        <pre className='post-content'>{post.postContent}</pre>
-      </div>
+      {formatContent(isTopic)}
       {formatFooter(isTopic)}
     </section>
   );
