@@ -23,6 +23,7 @@ function App() {
   
   const [ content, setContent ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ update, setUpdate ] = useState({});
   const [ currentTheme, setCurrentTheme ] = useState(
     localStorage.getItem('userTheme') ? 
       localStorage.getItem('userTheme') : window.matchMedia('(prefers-color-scheme: dark)') ? 
@@ -32,7 +33,6 @@ function App() {
   useEffect(() => {
     const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
     const fetchContent = async () => {
-      setContent([]);
       setIsLoading(true);
 
       try {
@@ -42,7 +42,6 @@ function App() {
         if (isActive) {
           setContent(data);
           setIsLoading(false);
-          window.scrollTo(0, 0);
         };
       } catch (e) {
         history.replace('/not-found');
@@ -54,9 +53,10 @@ function App() {
     if (!pathname.includes('success') && !pathname.includes('failure')) fetchContent();
 
     return function cleanup() {
+      setContent([]);
       isActive = false;
     };
-  }, [ pathname, history ]);
+  }, [ pathname, history, update ]);
 
   const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
@@ -65,6 +65,7 @@ function App() {
           replies={content}
           categorySlug={c.categorySlug}
           isLoading={isLoading}
+          onUpdate={handleUpdate}
         />
       </Route>
     ));
@@ -77,6 +78,7 @@ function App() {
           topics={content}
           categorySlug={c.categorySlug}
           isLoading={isLoading}
+          onUpdate={handleUpdate}
         />
       </Route>
     ));
@@ -98,6 +100,10 @@ function App() {
 
     localStorage.setItem('userTheme', selectedTheme);
     setCurrentTheme(selectedTheme);
+  };
+
+  const handleUpdate = () => {
+    setUpdate({});
   };
 
   return (

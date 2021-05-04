@@ -85,6 +85,19 @@
   display: none;
 }
 
+.update-link {
+  border: none;
+  margin: 0;
+  padding: 0;
+  color: var(--primary-anchor);
+  background-color: transparent;
+}
+
+.update-link:hover {
+  color: var(--primary-anchor-hover);
+  text-decoration: underline;
+}
+
 // ====== Tablet
 @media (min-width: 480px) {
   .content {

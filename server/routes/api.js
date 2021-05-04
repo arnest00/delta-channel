@@ -57,7 +57,18 @@ router.get('/:category', async (req, res) => {
   const model = getModel(category);
 
   try {
-    const posts = await model.find({ isTopic: true });
+    const postsData = await model.find({ isTopic: true });
+
+    const posts = postsData.map(p => ({
+      postId: p.postId, 
+      timestamp: p.timestamp, 
+      author: p.author, 
+      postContent: p.postContent, 
+      isTopic: p.isTopic, 
+      topicChildren: p.topicChildren, 
+      topicLatest: p.topicLatest
+    }));
+
     res.send(posts);
   } catch (e) {
     throw new Error('Could not retrieve topics.');
@@ -112,8 +123,16 @@ router.get('/:category/topic/:postId', async (req, res) => {
   const parent = await getParent(model, topicId);
 
   try {
-    const posts = await model.find({ replyParent: parent._id });
-    posts.unshift(parent);
+    const postsData = await model.find({ replyParent: parent._id });
+    postsData.unshift(parent);
+
+    const posts = postsData.map(p => ({
+      postId: p.postId, 
+      timestamp: p.timestamp, 
+      author: p.author, 
+      postContent: p.postContent
+    }));
+
     res.send(posts);
   } catch (e) {
     throw new Error('Could not retreive replies.');

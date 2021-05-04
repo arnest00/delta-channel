@@ -5,7 +5,7 @@ import PostForm from './PostForm';
 import NowLoading from './NowLoading';
 import Post from './Post';
 
-const Replies = ({ replies, categorySlug, isLoading }) => {
+const Replies = ({ replies, categorySlug, isLoading, onUpdate }) => {
   const [ formIsActive, setFormIsActive ] = useState(false);
   const { postId } = useParams();
 
@@ -31,6 +31,11 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
           <nav className='posts-navigation mobile'>
             <Link to={`/`}>back to categories</Link>
             <Link to={`/${categorySlug}`}>back to topics</Link>
+            <Button
+              onClick={onUpdate}
+              content='check for new replies'
+              className='update-link'
+            />
           </nav>
 
           <h2>replies to {categorySlug}#{postId}</h2>
@@ -52,6 +57,11 @@ const Replies = ({ replies, categorySlug, isLoading }) => {
           <nav className='posts-navigation'>
             <Link to={`/`}>back to categories</Link>
             <Link to={`/${categorySlug}`}>back to topics</Link>
+            <Button
+              onClick={onUpdate}
+              content='check for new replies'
+              className='update-link'
+            />
           </nav>
           <div className="button-container">
             {!formIsActive && <Button onClick={handleCancel} content='Reply to Topic' className='button new-button'/>}

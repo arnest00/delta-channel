@@ -5,7 +5,7 @@ import PostForm from './PostForm';
 import NowLoading from './NowLoading';
 import Post from './Post';
 
-const Topics = ({ topics, categorySlug, isLoading }) => {
+const Topics = ({ topics, categorySlug, isLoading, onUpdate }) => {
   const [ formIsActive, setFormIsActive ] = useState(false);
 
   const formatTopics = topics => {
@@ -34,6 +34,11 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
         <section className={`content${formIsActive ? ' expanded' : ''}`}>
           <nav className='posts-navigation mobile'>
             <Link to='/'>back to categories</Link>
+            <Button
+              onClick={onUpdate}
+              content='check for new topics'
+              className='update-link'
+            />
           </nav>
           
           <h2>topics in {categorySlug}</h2>
@@ -54,6 +59,11 @@ const Topics = ({ topics, categorySlug, isLoading }) => {
         <section className='sidebar'>
           <nav className='posts-navigation'>
             <Link to='/'>back to categories</Link>
+            <Button
+              onClick={onUpdate}
+              content='check for new topics'
+              className='update-link'
+            />
           </nav>
           <div className="button-container">
             {!formIsActive && <Button onClick={handleCancel} content='Create new Topic' className='button new-button'/>}
