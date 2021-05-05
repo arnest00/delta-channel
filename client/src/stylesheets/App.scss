@@ -64,10 +64,14 @@ select {
   main {
     flex: 1;
     margin-bottom: 0.42em;
-  }
+    display: flex;
 
-  .container {
-    margin: 0 0.33em;
+    .container {
+      flex: 1;
+      margin: 0 0.33em;
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 

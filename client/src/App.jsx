@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
-import fetch from 'node-fetch';
 import Theme from './components/Theme';
 import Title from './components/Title';
 import Header from './components/Header';
@@ -20,52 +19,20 @@ function App() {
   const themes = getThemes();
   const { pathname } = useLocation();
   let history = useHistory();
-  
-  const [ content, setContent ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [ update, setUpdate ] = useState({});
+
   const [ currentTheme, setCurrentTheme ] = useState(
     localStorage.getItem('userTheme') ? 
       localStorage.getItem('userTheme') : window.matchMedia('(prefers-color-scheme: dark)') ? 
       'dark' : 'lite'
   );
-  
-  useEffect(() => {
-    const staticRoutes = [ '/', '/not-found', '/about', '/rules' ];
-    const fetchContent = async () => {
-      setIsLoading(true);
-
-      try {
-        const response = await fetch(`/api${pathname}`);
-        const data = await response.json();
-
-        if (isActive) {
-          setContent(data);
-          setIsLoading(false);
-        };
-      } catch (e) {
-        history.replace('/not-found');
-      };
-    };
-    let isActive = true;
-
-    if (staticRoutes.includes(pathname)) return;
-    if (!pathname.includes('success') && !pathname.includes('failure')) fetchContent();
-
-    return function cleanup() {
-      setContent([]);
-      isActive = false;
-    };
-  }, [ pathname, history, update ]);
 
   const formatReplyViewRoutes = categories => {
     return categories.map((c,idx) => (
       <Route key={`${idx}`} path={`/${c.categorySlug}/topic/:postId`}>
         <Replies 
-          replies={content}
+          history={history}
+          pathname={pathname}
           categorySlug={c.categorySlug}
-          isLoading={isLoading}
-          onUpdate={handleUpdate}
         />
       </Route>
     ));
@@ -75,10 +42,9 @@ function App() {
     return categories.map((c,idx) => (
       <Route key={`${idx}`} path={`/${c.categorySlug}`}>
         <Topics 
-          topics={content}
+          history={history}
+          pathname={pathname}
           categorySlug={c.categorySlug}
-          isLoading={isLoading}
-          onUpdate={handleUpdate}
         />
       </Route>
     ));
@@ -100,10 +66,6 @@ function App() {
 
     localStorage.setItem('userTheme', selectedTheme);
     setCurrentTheme(selectedTheme);
-  };
-
-  const handleUpdate = () => {
-    setUpdate({});
   };
 
   return (

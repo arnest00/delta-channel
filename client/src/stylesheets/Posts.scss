@@ -1,108 +1,124 @@
-
-.content {
-  .button-container {
+.posts-container {
+  flex: 1;
+  display: flex;
+  
+  .content {
+    flex: 1;
     display: flex;
-    justify-content: center;
-    margin-bottom: 0.42em;
-  }
+    flex-direction: column;
 
-  .post-card {
-    margin-bottom: 0.42em;
-    background-color: var(--background-card);
-    
-    .post-header {
-      padding: 0.42em 0.63em;
-      display: flex;
-      justify-content: flex-start;
-      color: var(--font-body-subtitle);
-
-      div {
+    .button-container {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      height: fit-content;
+      text-align: center;
+      margin-bottom: 0.42em;
+      background-color: var(--background-body);
+    }
+  
+    .post-card {
+      margin-bottom: 0.42em;
+      background-color: var(--background-card);
+      
+      .post-header {
+        padding: 0.42em 0.63em;
         display: flex;
-      }
-
-      span {
-        font-weight: bold;
-        margin: 0 0.42em 0 0;
-      }
-      
-      .post-number {
-        margin: 0 0.42em 0 0;
-        font-weight: bold;
-        font-size: 1em;
-        color: var(--secondary);
-      }
-    }
-  
-    .post-content-container {
-      padding: 0.81em 1em;
-      background-color: var(--background-content);
-      
-      .post-content {
-        margin: 0;
-        font-family: var(--font-stack);
-        white-space: pre-wrap;
-
-        .post-readmore-link {
-          border: none;
-          margin: 0;
-          padding: 0;
-          color: var(--primary-anchor);
-          background-color: transparent;
-        }
-
-        .post-readmore-link:hover {
-          color: var(--primary-anchor-hover);
-          text-decoration: underline;
-        }
-      }
-    }
-  
-    .post-footer {
-      padding: 0.42em 0.63em;
-      display: flex;
-      justify-content: space-between;
-
-      time {
+        justify-content: flex-start;
         color: var(--font-body-subtitle);
+  
+        div {
+          display: flex;
+        }
+  
+        span {
+          font-weight: bold;
+          margin: 0 0.42em 0 0;
+        }
+        
+        .post-number {
+          margin: 0 0.42em 0 0;
+          font-weight: bold;
+          font-size: 1em;
+          color: var(--secondary);
+        }
+      }
+    
+      .post-content-container {
+        padding: 0.81em 1em;
+        background-color: var(--background-content);
+        
+        .post-content {
+          margin: 0;
+          font-family: var(--font-stack);
+          white-space: pre-wrap;
+  
+          .post-readmore-link {
+            border: none;
+            margin: 0;
+            padding: 0;
+            color: var(--primary-anchor);
+            background-color: transparent;
+          }
+  
+          .post-readmore-link:hover {
+            color: var(--primary-anchor-hover);
+            text-decoration: underline;
+          }
+        }
+      }
+    
+      .post-footer {
+        padding: 0.42em 0.63em;
+        display: flex;
+        justify-content: space-between;
+  
+        time {
+          color: var(--font-body-subtitle);
+        }
+      }
+    }
+    
+    .posts-navigation {
+      margin-top: auto;
+      margin-bottom: 0.42em;
+      text-align: center;
+  
+      a {
+        margin-right: 0.81em;
       }
     }
   }
-  
-  .posts-navigation {
-    margin: 0.42em 0;
 
-    a {
-      margin-right: 0.81em;
-    }
+  .expanded {
+    padding-bottom: 8.1em;
   }
-}
-
-.expanded {
-  padding-bottom: 7.5em;
-}
-
-.sidebar {
-  display: none;
-}
-
-.update-link {
-  border: none;
-  margin: 0;
-  padding: 0;
-  color: var(--primary-anchor);
-  background-color: transparent;
-}
-
-.update-link:hover {
-  color: var(--primary-anchor-hover);
-  text-decoration: underline;
+  
+  .sidebar {
+    display: none;
+  }
+  
+  .update-link {
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: var(--primary-anchor);
+    background-color: transparent;
+  }
+  
+  .update-link:hover {
+    color: var(--primary-anchor-hover);
+    text-decoration: underline;
+  }
 }
 
 // ====== Tablet
 @media (min-width: 480px) {
-  .content {
-    .post-card {
-      max-width: 75vw;
+  .posts-container {
+    .content {
+      .post-card {
+        max-width: 75vw;
+      }
     }
   }
 }
@@ -138,7 +154,8 @@
       height: fit-content;
 
       .button-container {
-        margin-top: 1.63em;
+        display: flex;
+        margin-top: 1.42em;
       }
 
       .posts-navigation {
