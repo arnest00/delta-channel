@@ -4,6 +4,17 @@ const express = require('express'),
 const { STPost, VGPost, MPPost, DTPost } = require('../models/Post');
 const Sequence = require('../models/Sequence');
 
+const initializeApp = async () => {
+  let sequence = await Sequence.findOne({ seqName: 'stPostId' });
+
+  if (!sequence) {
+    await Sequence.create({ seqName: 'stPostId', seqValue: 0 });
+    await Sequence.create({ seqName: 'vgPostId', seqValue: 0 });
+    await Sequence.create({ seqName: 'mpPostId', seqValue: 0 });
+    await Sequence.create({ seqName: 'dtPostId', seqValue: 0 });
+  };
+};
+
 const getModel = category => {
   switch (category) {
     case 'st':
@@ -47,6 +58,8 @@ const getParent = async (model, postId) => {
   return fetchedParent;
 };
 
+initializeApp();
+
 router.get('/', (req, res) => {
   res.send('This is the root route of the API routes!');
 });
@@ -81,6 +94,7 @@ router.post('/:category', async (req, res) => {
   const model = getModel(category);
   const sequence = `${category}PostId`;
   const postId = await getNextPostId(sequence);
+
   const timestamp = new Date().toISOString();
 
   const newTopic = {
@@ -100,21 +114,6 @@ router.post('/:category', async (req, res) => {
     throw new Error('Could not post topic.');
   };
 });
-
-// ====== Delete topic and replies
-// router.delete('/:category/topic/:postId', async (req, res) => {
-//   const { category, postId } = req.params;
-//   const model = getModel(category);
-//   const parent = await getParent(model, postId);
-
-//   try {
-//     await model.deleteMany({ replyParent: parent._id });
-//     await model.deleteOne({ postId: postId });
-//     res.send('Deletion succeeded!')
-//   } catch (e) {
-//     throw new Error('Could not delete topic and its replies.');
-//   };
-// });
 
 // ====== Index replies to topic
 router.get('/:category/topic/:postId', async (req, res) => {
@@ -167,26 +166,5 @@ router.post('/:category/topic/:postId', async (req, res) => {
     throw new Error('Could not post reply.')
   };
 });
-
-// ====== Delete reply
-// router.delete('/:category/topic/:postId/:replyId', async (req, res) => {
-//   const { category, postId, replyId } = req.params;
-//   const model = getModel(category);
-
-//   try {
-//     await model.findOneAndDelete(
-//       { postId: replyId }
-//     );
-//     await model.findOneAndUpdate(
-//       { postId, isTopic: true }, 
-//       { $inc: {topicChildren: -1} }
-//     );
-//     res.send('Deletion succeeded!');
-//   } catch (e) {
-//     throw new Error('Could not delete reply.');
-//   };
-// });
-
-// res.status(500).send('An error occurred.')
 
 module.exports = router;
