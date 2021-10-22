@@ -50,6 +50,30 @@ const themes = [
     }
   }, 
   {
+    themeShort: 'yeti', 
+    themeLong: 'iceWalker', 
+    themeData: {
+      'font-stack': baseFontStack, 
+      'primary-button-disabled': 'hsl(210, 34%, 63%)', 
+      'primary-anchor-hover': 'hsl(210, 34%, 63%)', 
+      'primary-button': 'hsl(213, 32%, 52%)', 
+      'primary-anchor': 'hsl(213, 32%, 52%)', 
+      'secondary': 'hsl(311, 20%, 63%)', 
+      'secondary-selection': 'hsl(311, 20%, 63%)', 
+      'accent-danger': 'hsl(354, 42%, 56%)', 
+      'background-content': 'hsl(218, 27%, 94%)',  
+      'background-body': 'hsl(218, 27%, 94%)',  
+      'background-card': 'hsl(218, 27%, 92%)',  
+      'background-header': 'hsl(218, 27%, 92%)',  
+      'background-border': 'hsl(219, 28%, 88%)',  
+      'font-button': 'hsl(218, 27%, 94%)', 
+      'font-button-disabled': 'hsl(219, 28%, 88%)', 
+      'font-body-subtitle': 'hsl(222, 16%, 28%)', 
+      'font-body': 'hsl(220, 16%, 22%)', 
+      'image-filter': 'none'
+    }
+  }, 
+  {
     themeShort: 'vamp', 
     themeLong: 'nightCreature', 
     themeData: {
@@ -58,8 +82,8 @@ const themes = [
       'primary-anchor-hover': 'hsl(265, 40%, 68%)', 
       'primary-button': 'hsl(265, 40%, 49%)', 
       'primary-button-disabled': 'hsl(266, 40%, 29%)', 
-      'secondary': 'hsl(65, 92%, 76%)', 
-      'secondary-selection': 'hsl(65, 45%, 66%)', 
+      'secondary': 'hsl(31, 100%, 71%)', 
+      'secondary-selection': 'hsl(31, 100%, 62%)', 
       'accent-danger': 'hsl(0, 100%, 67%)', 
       'background-content': 'hsl(232, 13%, 31%)',  
       'background-card': 'hsl(232, 14%, 27%)',  
