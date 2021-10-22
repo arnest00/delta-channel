@@ -49,6 +49,30 @@ const themes = [
       'image-filter': 'brightness(0.9)'
     }
   }, 
+  {
+    themeShort: 'vamp', 
+    themeLong: 'nightCreature', 
+    themeData: {
+      'font-stack': baseFontStack, 
+      'primary-anchor': 'hsl(265, 89%, 78%)', 
+      'primary-anchor-hover': 'hsl(265, 40%, 68%)', 
+      'primary-button': 'hsl(265, 40%, 49%)', 
+      'primary-button-disabled': 'hsl(266, 40%, 29%)', 
+      'secondary': 'hsl(65, 92%, 76%)', 
+      'secondary-selection': 'hsl(65, 45%, 66%)', 
+      'accent-danger': 'hsl(0, 100%, 67%)', 
+      'background-content': 'hsl(232, 13%, 31%)',  
+      'background-card': 'hsl(232, 14%, 27%)',  
+      'background-border': 'hsl(232, 14%, 24%)',  
+      'background-body': 'hsl(231, 15%, 21%)',  
+      'background-header': 'hsl(231, 15%, 18%)',  
+      'font-body': 'hsl(60, 30%, 96%)', 
+      'font-button': 'hsl(60, 30%, 96%)', 
+      'font-body-subtitle': 'hsl(60, 30%, 96%)', 
+      'font-button-disabled': 'hsl(60, 30%, 75%)', 
+      'image-filter': 'brightness(0.9)'
+    }
+  }, 
 ];
 
 export function getThemes() {
