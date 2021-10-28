@@ -35,6 +35,15 @@
 
     h1 {
       margin: 0.63em 0;
+
+      a {
+        text-decoration: none;
+        color: var(--font-body);
+      }
+
+      a:hover {
+        color: var(--font-body);
+      }
     }
   
     span {
