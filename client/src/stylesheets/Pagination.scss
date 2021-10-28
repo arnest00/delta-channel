@@ -1,0 +1,11 @@
+.pagination-menu {
+  display: flex;
+
+  a {
+    margin: 1rem;
+  }
+
+  a:hover {
+    cursor: pointer;
+  }
+}

@@ -4,12 +4,17 @@ import Button from './common/Button';
 import PostForm from './PostForm';
 import Post from './Post';
 import NowLoading from './NowLoading';
+import Pagination from './common/Pagination';
 
 const Topics = ({ history, pathname, categorySlug }) => {
   const [ content, setContent ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ noTopics, setNoTopics ] = useState(false);
   const [ update, setUpdate ] = useState({});
   const [ formIsActive, setFormIsActive ] = useState(false);
+  const [ currentPage, setCurrentPage ] = useState(0);
+
+  const pageSize = 5;
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -22,6 +27,7 @@ const Topics = ({ history, pathname, categorySlug }) => {
         if (isActive) {
           setContent(data);
           setIsLoading(false);
+          if (data.length === 0) setNoTopics(true);
         };
       } catch (e) {
         history.replace('/not-found');
@@ -41,7 +47,9 @@ const Topics = ({ history, pathname, categorySlug }) => {
       return (a.topicLatest > b.topicLatest) ? -1 : ((a.topicLatest < b.topicLatest) ? 1 : 0);
     });
 
-    const formattedTopics = sortedTopics.map(t => (
+    const filteredTopics = sortedTopics.slice(currentPage * pageSize, (currentPage * pageSize) + pageSize);
+
+    const formattedTopics = filteredTopics.map(t => (
       <Post 
         post={t} 
         key={t.postId} 
@@ -57,6 +65,7 @@ const Topics = ({ history, pathname, categorySlug }) => {
   };
 
   const handleUpdate = () => {
+    if (noTopics === true) setNoTopics(false);
     setUpdate({});
   };
   
@@ -77,6 +86,14 @@ const Topics = ({ history, pathname, categorySlug }) => {
 
           {formatTopics(content)}
           {isLoading && <NowLoading />}
+          {noTopics && <section>There are no topics. Start a conversation.</section>}
+
+          <Pagination 
+            contentCount={content.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
 
           <nav className='posts-navigation mobile'>
             <Link to='/'>back to categories</Link>
