@@ -1,11 +1,32 @@
 .pagination-menu {
   display: flex;
 
-  a {
-    margin: 1rem;
+  .pagination-link {
+    margin: 0.63rem 0.42rem;
+    padding: 0.33rem;
+    background: none;
+    border: none;
+    color: var(--primary-anchor);
   }
 
-  a:hover {
-    cursor: pointer;
+  .pagination-link:hover {
+    text-decoration: underline;
+  }
+
+  .pagination-link:disabled {
+    color: var(--primary-anchor-hover);
+    font-weight: bold;
+  }
+
+  .pagination-link:disabled:hover {
+    cursor: unset;
+    text-decoration: unset;
+  }
+}
+
+// ====== Tablet
+@media (min-width: 480px) {
+  .pagination-menu {
+    max-width: 75vw;
   }
 }

@@ -14,7 +14,7 @@ const Topics = ({ history, pathname, categorySlug }) => {
   const [ formIsActive, setFormIsActive ] = useState(false);
   const [ currentPage, setCurrentPage ] = useState(0);
 
-  const pageSize = 5;
+  const pageSize = 10;
 
   useEffect(() => {
     const fetchContent = async () => {
