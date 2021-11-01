@@ -3,11 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import Button from './common/Button';
 import PostForm from './PostForm';
 import Post from './Post';
-import NowLoading from './NowLoading';
+import Status from './Status';
 
 const Replies = ({ history, pathname, categorySlug }) => {
   const [ content, setContent ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [ status, setStatus ] = useState(undefined);
   const [ update, setUpdate ] = useState({});
   const [ formIsActive, setFormIsActive ] = useState(false);
   const { postId } = useParams();
@@ -16,13 +16,13 @@ const Replies = ({ history, pathname, categorySlug }) => {
     const fetchContent = async () => {
       
       try {
-        setIsLoading(true);
+        setStatus('loading');
         const response = await fetch(`/api${pathname}`);
         const data = await response.json();
 
         if (isActive) {
           setContent(data);
-          setIsLoading(false);
+          setStatus(undefined);
         };
       } catch (e) {
         history.replace('/not-found');
@@ -72,7 +72,9 @@ const Replies = ({ history, pathname, categorySlug }) => {
           />}
 
           {formatReplies(content)}
-          {isLoading && <NowLoading />}
+          {<Status 
+            currentStatus={status}
+          />}
 
           <nav className='posts-navigation mobile'>
             <Link to='/'>back to categories</Link>

@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import Button from './common/Button';
 import PostForm from './PostForm';
 import Post from './Post';
-import NowLoading from './NowLoading';
+import Status from './Status';
 import Pagination from './common/Pagination';
 
 const Topics = ({ history, pathname, categorySlug }) => {
   const [ content, setContent ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [ noTopics, setNoTopics ] = useState(false);
+  const [ status, setStatus ] = useState(undefined);
   const [ update, setUpdate ] = useState({});
   const [ formIsActive, setFormIsActive ] = useState(false);
   const [ currentPage, setCurrentPage ] = useState(0);
@@ -20,14 +19,14 @@ const Topics = ({ history, pathname, categorySlug }) => {
     const fetchContent = async () => {
       
       try {
-        setIsLoading(true);
+        setStatus('loading');
         const response = await fetch(`/api${pathname}`);
         const data = await response.json();
 
         if (isActive) {
           setContent(data);
-          setIsLoading(false);
-          if (data.length === 0) setNoTopics(true);
+          setStatus(undefined);
+          if (data.length === 0) setStatus('empty');
         };
       } catch (e) {
         history.replace('/not-found');
@@ -65,7 +64,6 @@ const Topics = ({ history, pathname, categorySlug }) => {
   };
 
   const handleUpdate = () => {
-    if (noTopics === true) setNoTopics(false);
     setUpdate({});
   };
   
@@ -85,8 +83,9 @@ const Topics = ({ history, pathname, categorySlug }) => {
           />}
 
           {formatTopics(content)}
-          {isLoading && <NowLoading />}
-          {noTopics && <section>There are no topics. Start a conversation.</section>}
+          {<Status 
+            currentStatus={status}
+          />}
 
           <Pagination 
             contentCount={content.length}
